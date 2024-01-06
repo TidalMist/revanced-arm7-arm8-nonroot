@@ -224,7 +224,7 @@ isoneof() {
 # -------------------- apkmirror --------------------
 dl_apkmirror() {
 	local url=$1 version=${2// /-} output=$3 arch=$4 dpi=$5 apkorbundle=APK
-	if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
+	if [ "$arch" = "armeabi-v7a" ]; then arch="armeabi-v7a"; fi
 	[ "${DRYRUN:-}" ] && {
 		: >"$output"
 		return 0
@@ -319,7 +319,7 @@ get_archive_resp() {
 	if [ -z "$r" ]; then return 1; else __ARCHIVE_RESP__=$(sed -n 's;^<a href="\(.*\)"[^"]*;\1;p' <<<"$r"); fi
 	__ARCHIVE_PKG_NAME__=$(awk -F/ '{print $NF}' <<<"$1")
 }
-get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|arm-v7a\)\.apk//g' <<<"$__ARCHIVE_RESP__"; }
+get_archive_vers() { sed 's/^[^-]*-//;s/-\(all\|arm64-v8a\|armeabi-v7a\)\.apk//g' <<<"$__ARCHIVE_RESP__"; }
 get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 # --------------------------------------------------
 
@@ -441,7 +441,7 @@ build_rv() {
 		p_patcher_args+=("--rip-lib x86_64 --rip-lib x86")
 		if [ "$arch" = "arm64-v8a" ]; then
 			p_patcher_args+=("--rip-lib armeabi-v7a")
-		elif [ "$arch" = "arm-v7a" ]; then
+		elif [ "$arch" = "armeabi-v7a" ]; then
 			p_patcher_args+=("--rip-lib arm64-v8a")
 		fi
 	fi
@@ -536,7 +536,7 @@ customize_sh() {
 	# shellcheck disable=SC2001
 	if [ "$3" = "arm64-v8a" ]; then
 		s=$(sed 's/#arm$/abort "ERROR: Wrong arch\nYour device: arm\nModule: arm64"/g' <<<"$s")
-	elif [ "$3" = "arm-v7a" ]; then
+	elif [ "$3" = "armeabi-v7a" ]; then
 		s=$(sed 's/#arm64$/abort "ERROR: Wrong arch\nYour device: arm64\nModule: arm"/g' <<<"$s")
 	fi
 	echo "${s//__PKGVER/$2}" >"${5}/customize.sh"
