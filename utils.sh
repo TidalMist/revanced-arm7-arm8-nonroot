@@ -324,19 +324,25 @@ get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 # --------------------------------------------------
 
 patch_apk() {
+        local out_aapt2="${TEMP_DIR}/out-aapt2-${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}-${build_mode}.apk"
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
 	declare -r tdir=$(mktemp -d -p $TEMP_DIR)
-	local cmd="java -jar $rv_cli_jar patch $stock_input -r $tdir -p -o $patched_apk -b $rv_patches_jar \
---keystore=ks.keystore --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --alias=jhc $patcher_args"
-	if [ "$OS" = Android ]; then cmd+=" --custom-aapt2-binary=${TEMP_DIR}/aapt2"; fi
+        local cmd="java -jar $rv_cli_jar patch $stock_input -r $tdir -p -o $patched_apk -b $rv_patches_jar $patcher_args"
+        if [ ! "$OS" = Android ]; then cmd+=" --unsigned && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $out_aapt2 \
+&& ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -p -f 4 $out_aapt2 $patched_apk"; fi
+        if [ "$build_mode" = apk ] && [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner sign -v --v4-signing-enabled false --cert ./ks.jhc.x509.pem --key ./ks.jhc.pk8 $patched_apk"; fi
+	if [ "$OS" = Android ]; then cmd+=" --keystore=ks.keystore --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --alias=jhc --custom-aapt2-binary=${TEMP_DIR}/aapt2"; fi
 	pr "$cmd"
 	if [ "${DRYRUN:-}" = true ]; then
 		cp -f "$stock_input" "$patched_apk"
 	else
 		eval "$cmd"
 	fi
+        wait
 	[ -f "$patched_apk" ]
 }
+
+wait
 
 build_rv() {
 	eval "declare -A args=${1#*=}"
@@ -469,7 +475,7 @@ build_rv() {
 			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}.apk"
 		fi
 		if [ "$build_mode" = module ] && [ "${args[riplib]}" = true ]; then
-			patcher_args+=("--unsigned --rip-lib arm64-v8a --rip-lib armeabi-v7a")
+			patcher_args+=("--rip-lib arm64-v8a --rip-lib armeabi-v7a")
 		fi
 		if [ ! -f "$patched_apk" ] || [ "$REBUILD" = true ]; then
 			if ! patch_apk "$stock_apk" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}"; then
