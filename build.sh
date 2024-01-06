@@ -147,7 +147,7 @@ for table_name in $(toml_get_table_names); do
 	} || app_args[archive_dlurl]=""
 	if [ -z "${app_args[dl_from]:-}" ]; then abort "ERROR: no 'apkmirror_dlurl', 'uptodown_dlurl' or 'apkmonk_dlurl' option was set for '$table_name'."; fi
 	app_args[arch]=$(toml_get "$t" arch) || app_args[arch]="all"
-	if [ "${app_args[arch]}" != "both" ] && [ "${app_args[arch]}" != "all" ] && [[ "${app_args[arch]}" != "arm64-v8a"* ]] && [[ "${app_args[arch]}" != "arm-v7a"* ]]; then
+	if [ "${app_args[arch]}" != "both" ] && [ "${app_args[arch]}" != "all" ] && [[ "${app_args[arch]}" != "arm64-v8a"* ]] && [[ "${app_args[arch]}" != "armeabi-v7a"* ]]; then
 		abort "wrong arch '${app_args[arch]}' for '$table_name'"
 	fi
 
@@ -164,9 +164,9 @@ for table_name in $(toml_get_table_names); do
 		app_args[arch]="arm64-v8a"
 		idx=$((idx + 1))
 		build_rv_w
-		app_args[table]="$table_name (arm-v7a)"
+		app_args[table]="$table_name (armeabi-v7a)"
 		app_args[module_prop_name]="${app_args[module_prop_name]}-arm"
-		app_args[arch]="arm-v7a"
+		app_args[arch]="armeabi-v7a"
 		if ((idx >= PARALLEL_JOBS)); then wait -n; fi
 		idx=$((idx + 1))
 		build_rv_w
