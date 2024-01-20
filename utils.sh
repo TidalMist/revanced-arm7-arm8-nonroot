@@ -327,7 +327,7 @@ patch_apk() {
         local out_aapt2="${TEMP_DIR}/out-aapt2-${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}-${build_mode}.apk"
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
 	declare -r tdir=$(mktemp -d -p $TEMP_DIR)
-        local cmd="java -jar $rv_cli_jar patch $stock_input -r $tdir -p -o $patched_apk -b $rv_patches_jar $patcher_args"
+        local cmd="java -jar $rv_cli_jar patch $stock_input -r $tdir -p -o $patched_apk -b $rv_patches_jar $patcher_args --options=options.json"
         if [ ! "$OS" = Android ]; then cmd+=" --unsigned && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $out_aapt2 \
 && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -p -f 4 $out_aapt2 $patched_apk"; fi
         if [ "$build_mode" = apk ] && [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner sign -v --v4-signing-enabled false --cert ./ks.jhc.x509.pem --key ./ks.jhc.pk8 $patched_apk"; fi
@@ -415,7 +415,7 @@ build_rv() {
 	fi
 	log "${table}: ${version}"
 
-	if [ "${args[merge_integrations]}" = true ]; then p_patcher_args+=("-m ${args[integ]}"); fi
+	p_patcher_args+=("-m ${args[integ]}")
 	local microg_patch
 	microg_patch=$(jq -r ".[] | select(.compatiblePackages // [] | .[] | .name==\"${pkg_name}\") | .name" "${args[ptjs]}" | grep -i "gmscore\|microg" || :)
 	if [ -n "$microg_patch" ] && [[ ${p_patcher_args[*]} =~ $microg_patch ]]; then
