@@ -1,3 +1,9 @@
+## Add to [Obtainium](https://github.com/ImranR98/Obtainium)
+Paste app source url https://github.com/TidalMist/revanced-arm7-arm8-nonroot and in field **Filter apks by regular expression** write `material` or `black` or `dark`
+Arm arch will auto selected
+
+<details>
+
 #### ⚠️ Do not download modules from 3rd party sources like random websites you found on Google. There are many that uses my modules and impersonates ReVanced.
 
 # ReVanced Magisk Module
