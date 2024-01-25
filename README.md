@@ -1,8 +1,23 @@
 ## Add to [Obtainium](https://github.com/ImranR98/Obtainium)
-Paste app source url https://github.com/TidalMist/revanced-arm7-arm8-nonroot and in field **Filter apks by regular expression** write `material` or `black` or `dark`
+Redirects config to obtainium if installed
+
+# [`Material you`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22material%5C%22%7D%22%7D)
+
+# [`Black`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22black%5C%22%7D%22%7D)
+
+# [`Dark`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22dark%5C%22%7D%22%7D)
 
 Arm arch will auto selected
 > To not see two splash screens, disable `Enable new splash animation` in YouTube settings > ReVanced Extended > Miscellaneous
+
+<details><summary><big/>If it doesn't redirect</big></summary>
+ 
+Paste app source url https://github.com/TidalMist/revanced-arm7-arm8-nonroot and in field **Filter apks by regular expression** write `material` or `black` or `dark`
+
+</details>
+
+___
+
 <details>
 
 #### ⚠️ Do not download modules from 3rd party sources like random websites you found on Google. There are many that uses my modules and impersonates ReVanced.
