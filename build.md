@@ -1,9 +1,9 @@
-Dark (arm64-v8a): 19.02.39  
-Black (arm64-v8a): 19.02.39  
-Dark (armeabi-v7a): 19.02.39  
-Black (armeabi-v7a): 19.02.39  
-Material-You (arm64-v8a): 19.02.39  
 Material-You (armeabi-v7a): 19.02.39  
+Material-You (arm64-v8a): 19.02.39  
+Black (arm64-v8a): 19.02.39  
+Black (armeabi-v7a): 19.02.39  
+Dark (arm64-v8a): 19.02.39  
+Dark (armeabi-v7a): 19.02.39  
 
 Install [Vanced Microg](https://github.com/inotia00/VancedMicroG/releases) for non-root YouTube and YT Music  
 Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) module to detach YouTube and YT Music from Play Store  
