@@ -1,11 +1,11 @@
 ## Add to [Obtainium](https://github.com/ImranR98/Obtainium)
 ***These links work on devices with Obtainium installed***
 
-# [`Material you`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22material%5C%22%7D%22%7D)
+# [`Material you`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22material%5C%22%7D%22%7D)
 
-# [`Black`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22black%5C%22%7D%22%7D)
+# [`Black`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22black%5C%22%7D%22%7D)
 
-# [`Dark`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22dark%5C%22%7D%22%7D)
+# [`Dark`](https://tidalmist.github.io/obtainium-http-protocol-redirector?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22dark%5C%22%7D%22%7D)
 
 Arm arch will auto selected
 > To not see two splash screens, disable `Enable new splash animation` in YouTube settings > ReVanced Extended > Miscellaneous
