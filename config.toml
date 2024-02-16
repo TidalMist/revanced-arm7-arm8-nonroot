@@ -16,7 +16,7 @@ version = "latest"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou' 'Add splash animation'"
-excluded-patches = "'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube' 'Theme'"
+excluded-patches = "'Change player flyout panel toggles' 'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube' 'Theme'"
 
 [Black]
 app-name = "og-black"
@@ -29,7 +29,7 @@ version = "latest"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'Add splash animation' 'Theme'"
-excluded-patches = "'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube'"
+excluded-patches = "'Change player flyout panel toggles' 'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube'"
 
 [Dark]
 app-name = "og-dark"
@@ -42,4 +42,4 @@ version = "latest"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'Add splash animation'"
-excluded-patches = "'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube' 'Theme'"
+excluded-patches = "'Change player flyout panel toggles' 'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube' 'Theme'"
