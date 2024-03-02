@@ -1,14 +1,14 @@
+Dark (arm64-v8a): 19.07.40  
 Black (arm64-v8a): 19.07.40  
 Dark (armeabi-v7a): 19.07.40  
-Dark (arm64-v8a): 19.07.40  
 Black (armeabi-v7a): 19.07.40  
-Material-You (arm64-v8a): 19.07.40  
 Material-You (armeabi-v7a): 19.07.40  
+Material-You (arm64-v8a): 19.07.40  
 
 Install [Vanced Microg](https://github.com/inotia00/VancedMicroG/releases) for non-root YouTube and YT Music  
 
 Changelog:  
 CLI: inotia00/revanced-cli-4.4.1-all.jar  
-Integrations: YT-Advanced/revanced-integrations-0.145.2.apk  
-Patches: YT-Advanced/revanced-patches-2.220.7.jar  
-[Changelog](https://github.com/YT-Advanced/ReX-patches/releases/tag/v2.220.7)  
+Integrations: YT-Advanced/revanced-integrations-0.145.3.apk  
+Patches: YT-Advanced/revanced-patches-2.220.8.jar  
+[Changelog](https://github.com/YT-Advanced/ReX-patches/releases/tag/v2.220.8)  
