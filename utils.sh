@@ -487,7 +487,7 @@ build_rv() {
 			fi
 		fi
 		if [ "$build_mode" = apk ]; then
-			local apk_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-v${version_f}-${arch_f}.apk"
+			local apk_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-${arch_f}.apk"
 			cp -f "$patched_apk" "$apk_output"
 			pr "Built ${table} (non-root): '${apk_output}'"
 			continue
