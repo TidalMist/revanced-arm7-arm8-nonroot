@@ -1,9 +1,9 @@
 Black (arm64-v8a): 19.07.40  
-Material-You (armeabi-v7a): 19.07.40  
-Black (armeabi-v7a): 19.07.40  
 Material-You (arm64-v8a): 19.07.40  
-Dark (armeabi-v7a): 19.07.40  
+Black (armeabi-v7a): 19.07.40  
+Material-You (armeabi-v7a): 19.07.40  
 Dark (arm64-v8a): 19.07.40  
+Dark (armeabi-v7a): 19.07.40  
 
 Install [Vanced Microg](https://github.com/inotia00/VancedMicroG/releases) for non-root YouTube and YT Music  
 
