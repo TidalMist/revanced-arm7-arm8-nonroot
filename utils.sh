@@ -414,9 +414,9 @@ build_rv() {
 		done
 		if [ ! -f "$stock_apk" ]; then return 0; fi
 	fi
-	if [ "${rv_brand_f}" = "rex" ]; then "${version}" > "rex.md"; fi
-        if [ "${rv_brand_f}" = "rv" ]; then "${version}" > "rv.md"; fi
-        # log "${table}: ${version}"
+	# if [ "${rv_brand_f}" = "rex" ]; then "${version}" > "rex.md"; fi
+        # if [ "${rv_brand_f}" = "rv" ]; then "${version}" > "rv.md"; fi
+        log "${table}: ${version}"
 
 	p_patcher_args+=("-m ${args[integ]}")
 	local microg_patch
