@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Latest [ReVanced MicroG](https://github.com/ReVanced/GmsCore/releases/latest) and patches requires original YouTube installed even if there are no google services on device, otherwise yt revanced will crash at startup.
+> Latest [ReVanced MicroG](https://github.com/ReVanced/GmsCore/releases/latest) and patches requires any version of original YouTube installed even if there are no google services on device, otherwise yt revanced will crash at startup.
 >
 > Recover yt somehow, if you delete it with adb
 > 
