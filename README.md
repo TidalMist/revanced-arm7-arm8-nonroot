@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> Latest [ReVanced MicroG](https://github.com/ReVanced/GmsCore/releases/latest) and patches requires original YouTube installed even if there are no google services on device, otherwise yt revanced will crash at startup.
+>
+> Recover yt somehow, if you delete it with adb
+> 
+> yt can be disabled if it installed as system app
+
 > [!NOTE]
 > package name or something can changed. Check that repo if obtainium errors installing or cant find apk release. May need reinstall or re-add yt. Save settings before it
 ### Get updates
