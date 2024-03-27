@@ -4,6 +4,8 @@
 > Recover yt somehow, if you delete it with adb
 > 
 > yt can be disabled if it installed as system app
+> 
+> For Huawei, turn on register device, select profile Emulator arm64-v8a, then log in
 
 > [!NOTE]
 > package name or something can changed. Check that repo if obtainium errors installing or cant find apk release. May need reinstall or re-add yt. Save settings before it
