@@ -16,7 +16,7 @@ options-json = "packagename.json"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
-excluded-patches = "'Theme' 'Shorts overlay buttons'"
+excluded-patches = "'Theme' 'Shorts overlay buttons' 'Tuck away preferences'"
 
 [Black]
 app-name = "og-black"
@@ -28,7 +28,7 @@ options-json = "packagename.json"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Shorts overlay buttons'"
+excluded-patches = "'Shorts overlay buttons' 'Tuck away preferences'"
 
 [Dark]
 app-name = "og-dark"
@@ -40,7 +40,7 @@ options-json = "packagename.json"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Theme' 'Shorts overlay buttons'"
+excluded-patches = "'Theme' 'Shorts overlay buttons' 'Tuck away preferences'"
 
 [MaterialYou-rvm]
 app-name = "materiialyou"
