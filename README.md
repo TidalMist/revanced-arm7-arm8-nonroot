@@ -11,7 +11,7 @@
 > [!NOTE]
 > package name or something may change. Check that repo if obtainium errors installing or cant find apk release. May need reinstall or re-add yt. Save settings before it.
 > becomes laggy > try reinstall
-<details><summary>If you star repo, star them too</summary><h1>
+<details><summary>If you star repo, star them too</summary><h2>
 
 [j-hc](https://github.com/j-hc?tab=repositories&q=&type=&language=&sort=stargazers)
 
@@ -30,7 +30,9 @@
 [kitadai31](https://github.com/kitadai31?tab=repositories&q=&type=&language=&sort=stargazers)
 
 [d4n3436](https://github.com/d4n3436?tab=repositories&q=&type=&language=&sort=stargazers)
-</details>
+
+[ImranR98](https://github.com/ImranR98?tab=repositories&q=&type=&language=&sort=stargazers)
+</h2></details>
 
 ## Get updates
 >Notifications, **A12+ background auto update**, shizuku, ~root~. +f-droid and other app sources
