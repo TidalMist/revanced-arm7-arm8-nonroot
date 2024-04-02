@@ -10,7 +10,7 @@ DarkA6-7: 17.34.36
 Install [ReVanced MicroG](https://github.com/Revanced/GmsCore/releases/latest) for non-root YouTube  
 CLI: ReVanced/revanced-cli-4.6.0-all.jar  
 Integrations: anddea/revanced-integrations-0.150.0.apk  
-Patches: anddea/revanced-patches-2.223.0.jar  
+Patches: anddea/revanced-patches-2.222.0.jar  
 [Changelog](https://github.com/anddea/revanced-patches/releases/tag/v2.223.0)
 
 CLI: kitadai31/revanced-cli-3.1.2-all.jar  
