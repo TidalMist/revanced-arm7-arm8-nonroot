@@ -10,7 +10,24 @@
 -->
 > [!NOTE]
 > package name or something may change. Check that repo if obtainium errors installing or cant find apk release. May need reinstall or re-add yt. Save settings before it.
-> If becomes laggy, try reinstall
+> becomes laggy > try reinstall
+<details><summary>If you star repo, star them too</summary><h1>
+
+[j-hc](https://github.com/j-hc?tab=repositories&q=&type=&language=&sort=stargazers)
+
+[ReVanced](https://github.com/orgs/ReVanced/repositories?q=sort%3Astars)
+
+[inotia00](https://github.com/inotia00?tab=repositories&q=&type=&language=&sort=stargazers)
+
+[YT-Advanced](https://github.com/YT-Advanced?tab=repositories&q=&type=&language=&sort=stargazers)
+
+[MarcaDian](https://github.com/MarcaDian?tab=repositories)
+
+[anddea](https://github.com/anddea?tab=repositories&q=&type=&language=&sort=stargazers)
+
+[rufusin](https://github.com/rufusin?tab=repositories&q=&type=&language=&sort=stargazers)
+</details>
+
 ## Get updates
 >Notifications, **A12+ background auto update**, shizuku, ~root~. +f-droid and other app sources
 >
