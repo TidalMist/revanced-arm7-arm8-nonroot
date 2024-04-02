@@ -310,12 +310,17 @@ get_archive_pkg_name() { echo "$__ARCHIVE_PKG_NAME__"; }
 # --------------------------------------------------
 
 patch_apk() {
-        local out_aapt2="${TEMP_DIR}/out-aapt2-${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}-${build_mode}.apk"
+        declare -r tdir=$(mktemp -d -p $TEMP_DIR)
+        local zipalign="${ANDROID_HOME}/build-tools/34.0.0/zipalign -p -f 4"
+	local apksigner="${ANDROID_HOME}/build-tools/34.0.0/apksigner sign -v --v4-signing-enabled false --cert ./ks.jhc.x509.pem --key ./ks.jhc.pk8"
+        local patched_apk7copy="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-armeabi-v7a-copy.apk"
+	local out_aapt2="${TEMP_DIR}/out-aapt2-${app_name_l}-${rv_brand_f}-${version_f}-arm64-v8a-${build_mode}.apk"
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
-        local cmd="java -jar $rv_cli_jar patch $stock_input -p -o $patched_apk -b $rv_patches_jar $patcher_args --options=options.json"
-        if [ ! "$OS" = Android ]; then cmd+=" --unsigned && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $out_aapt2 \
-&& ${ANDROID_SDK_ROOT}/build-tools/34.0.0/zipalign -p -f 4 $out_aapt2 $patched_apk"; fi
-        if [ "$build_mode" = apk ] && [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_SDK_ROOT}/build-tools/34.0.0/apksigner sign -v --v4-signing-enabled false --cert ./ks.jhc.x509.pem --key ./ks.jhc.pk8 $patched_apk"; fi
+        local cmd="java -jar $rv_cli_jar patch $stock_input -p -o $patched_apk -b $rv_patches_jar $patcher_args --options=$options_json"
+	if [ "${patches_src}" = kitadai31/revanced-patches-android6-7 ]; then cmd+=" -r $tdir"; fi
+        if [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_HOME}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $out_aapt2 \
+&& cp $out_aapt2 $patched_apk7copy && zip -dq $out_aapt2 lib/arme* lib/x* && zip -dq $patched_apk7copy lib/arm6* lib/x* && $zipalign $out_aapt2 $patched_apk && $zipalign $patched_apk7copy $patched_apk7"; fi
+        if [ "$build_mode" = apk ] && [ ! "$OS" = Android ]; then cmd+=" && $apksigner $patched_apk && $apksigner $patched_apk7"; fi
 	if [ "$OS" = Android ]; then cmd+=" --keystore=ks.keystore --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --alias=jhc --custom-aapt2-binary=${AAPT2}"; fi
 	pr "$cmd"
 	if [ "${DRYRUN:-}" = true ]; then
@@ -349,6 +354,7 @@ build_rv() {
 	local dl_from=${args[dl_from]}
 	local arch=${args[arch]}
 	local arch_f="${arch// /}"
+        local options_json=${args[options_json]}
 
 	local p_patcher_args=()
 	p_patcher_args+=("$(join_args "${args[excluded_patches]}" -e) $(join_args "${args[included_patches]}" -i)")
@@ -433,14 +439,16 @@ build_rv() {
 		patcher_args=("${p_patcher_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
 		if [ -n "$microg_patch" ]; then
-			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}-${build_mode}.apk"
+			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-arm64-v8a-${build_mode}.apk"
+                        patched_apk7="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-armeabi-v7a-${build_mode}.apk"
 			if [ "$build_mode" = apk ]; then
 				patcher_args+=("-i \"${microg_patch}\"")
 			elif [ "$build_mode" = module ]; then
 				patcher_args+=("-e \"${microg_patch}\"")
 			fi
 		else
-			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}.apk"
+			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-arm64-v8a.apk"
+                        patched_apk7="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-armeabi-v7a.apk"
 		fi
 		if [ "${args[riplib]}" = true ]; then
                         patcher_args+=("--rip-lib x86_64 --rip-lib x86")
@@ -462,8 +470,10 @@ build_rv() {
 			fi
 		fi
 		if [ "$build_mode" = apk ]; then
-			local apk_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-${arch_f}.apk"
+			local apk_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-arm64-v8a.apk"
+                        local apk_output7="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-armeabi-v7a.apk"
 			cp -f "$patched_apk" "$apk_output"
+                        cp -f "$patched_apk7" "$apk_output7"
 			pr "Built ${table} (non-root): '${apk_output}'"
 			continue
 		fi
