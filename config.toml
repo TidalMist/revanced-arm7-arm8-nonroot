@@ -1,5 +1,5 @@
 enable-magisk-update = false   # set this to false if you do not want to receive updates for the module in magisk app
-
+riplib = false
 # add 'enabled = false' for not patching a specific app or remove it from the config
 # see https://github.com/j-hc/revanced-magisk-module/blob/main/CONFIG.md for more detailed explanations
 
@@ -8,36 +8,94 @@ enable-magisk-update = false   # set this to false if you do not want to receive
 
 [Material-You]
 app-name = "og-material-you"
-patches-source = "YT-Advanced/ReX-patches"
-integrations-source = "YT-Advanced/ReX-integrations"
-rv-brand = "rex"
-arch = "both"
-version = "19.07.40"
+patches-source = "anddea/revanced-patches"
+integrations-source = "anddea/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+rv-brand = "anddea"
+options-json = "packagename.json"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'MaterialYou' 'Add splash animation'"
-excluded-patches = "'Change player flyout panel toggles' 'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube' 'Theme'"
+included-patches = "'MaterialYou'"
+excluded-patches = "'Theme' 'Shorts overlay buttons'"
 
 [Black]
 app-name = "og-black"
-patches-source = "YT-Advanced/ReX-patches"
-integrations-source = "YT-Advanced/ReX-integrations"
-rv-brand = "rex"
-arch = "both"
-version = "19.07.40"
+patches-source = "anddea/revanced-patches"
+integrations-source = "anddea/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+rv-brand = "anddea"
+options-json = "packagename.json"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Add splash animation' 'Theme'"
-excluded-patches = "'Change player flyout panel toggles' 'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube'"
+included-patches = ""
+excluded-patches = "'Shorts overlay buttons'"
 
 [Dark]
 app-name = "og-dark"
-patches-source = "YT-Advanced/ReX-patches"
-integrations-source = "YT-Advanced/ReX-integrations"
-rv-brand = "rex"
-arch = "both"
-version = "19.07.40"
+patches-source = "anddea/revanced-patches"
+integrations-source = "anddea/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+rv-brand = "anddea"
+options-json = "packagename.json"
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Add splash animation'"
-excluded-patches = "'Change player flyout panel toggles' 'Custom branding heading' 'Custom branding icon YouTube' 'Custom branding name YouTube' 'Theme'"
+included-patches = ""
+excluded-patches = "'Theme' 'Shorts overlay buttons'"
+
+[MaterialYou-rvm]
+app-name = "materiialyou"
+patches-source = "MarcaDian/revanced-patches"
+integrations-source = "MarcaDian/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv-marcad"
+options-json = "materialyou.json"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = ""
+
+[Black-rvm]
+app-name = "blaack"
+patches-source = "MarcaDian/revanced-patches"
+integrations-source = "MarcaDian/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv-marcad"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = ""
+
+[Dark-rvm]
+app-name = "daark"
+patches-source = "MarcaDian/revanced-patches"
+integrations-source = "MarcaDian/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv-marcad"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = "'Theme'"
+
+[BlackA6-7]
+app-name = "bllack"
+patches-source = "kitadai31/revanced-patches-android6-7"
+integrations-source = "kitadai31/revanced-integrations"
+cli-source = "kitadai31/rvcli"
+rv-brand = "rvx-a6-7"
+version = "17.34.36"
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = "'return-youtube-dislike' 'custom-branding-name' 'custom-branding-icon-afn-red'"
+
+[DarkA6-7]
+app-name = "darrk"
+patches-source = "kitadai31/revanced-patches-android6-7"
+integrations-source = "kitadai31/revanced-integrations"
+cli-source = "kitadai31/rvcli"
+rv-brand = "rvx-a6-7"
+version = "17.34.36"
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = "'return-youtube-dislike' 'theme' 'custom-branding-name' 'custom-branding-icon-afn-red'"
