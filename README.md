@@ -26,6 +26,10 @@
 [anddea](https://github.com/anddea?tab=repositories&q=&type=&language=&sort=stargazers)
 
 [rufusin](https://github.com/rufusin?tab=repositories&q=&type=&language=&sort=stargazers)
+
+[kitadai31](https://github.com/kitadai31?tab=repositories&q=&type=&language=&sort=stargazers)
+
+[d4n3436](https://github.com/d4n3436?tab=repositories&q=&type=&language=&sort=stargazers)
 </details>
 
 ## Get updates
