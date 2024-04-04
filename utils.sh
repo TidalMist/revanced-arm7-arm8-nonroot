@@ -321,7 +321,7 @@ patch_apk() {
         if [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_HOME}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $out_aapt2 \
 && cp $out_aapt2 $patched_apk7copy && zip -dq $out_aapt2 lib/arme* lib/x* && zip -dq $patched_apk7copy lib/arm6* lib/x* && $zipalign $out_aapt2 $patched_apk && $zipalign $patched_apk7copy $patched_apk7"; fi
         if [ "$build_mode" = apk ] && [ ! "$OS" = Android ]; then cmd+=" && $apksigner $patched_apk && $apksigner $patched_apk7"; fi
-	if [ "$OS" = Android ]; then cmd+=" --keystore=ks.keystore --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --alias=jhc --custom-aapt2-binary=${AAPT2}"; fi
+	if [ "$OS" = Android ]; then cmd+=" --keystore=ks.keystore --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --keystore-entry-alias=jhc --custom-aapt2-binary=${AAPT2}"; fi
 	pr "$cmd"
 	if [ "${DRYRUN:-}" = true ]; then
 		cp -f "$stock_input" "$patched_apk"
