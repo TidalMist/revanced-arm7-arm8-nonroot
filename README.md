@@ -1,6 +1,6 @@
-> [!IMPORTANT]
+<!-- > [!IMPORTANT]
 > For Huawei with latest [ReVanced MicroG](https://github.com/ReVanced/GmsCore/releases/latest), turn on register device, select profile Emulator arm64-v8a, then log in
-<!-- > Latest [ReVanced MicroG](https://github.com/ReVanced/GmsCore/releases/latest) and patches requires any version of original YouTube installed even if there are no google services on device, otherwise yt revanced will crash at startup.
+> Latest [ReVanced MicroG](https://github.com/ReVanced/GmsCore/releases/latest) and patches requires any version of original YouTube installed even if there are no google services on device, otherwise yt revanced will crash at startup.
 >
 > Recover yt somehow, if you delete it with adb
 > 
