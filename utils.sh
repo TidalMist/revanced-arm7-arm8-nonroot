@@ -322,7 +322,7 @@ patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
         local cmd="java -jar $rv_cli_jar patch $stock_input -p -o $patched_apk -b $rv_patches_jar $patcher_args --options=$options_json"
 	if [ "${patches_src}" = kitadai31/revanced-patches-android6-7 ]; then cmd+=" -r $tdir"; fi
-        if [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_HOME}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi --shorten-resource-paths $patched_apk -o $out_aapt2 \
+        if [ ! "$OS" = Android ]; then cmd+=" && ${ANDROID_HOME}/build-tools/34.0.0/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $out_aapt2 \
 && cp $out_aapt2 $patched_apk7copy && zip -dq $out_aapt2 lib/arme* lib/x* && zip -dq $patched_apk7copy lib/arm6* lib/x* && $zipalign $out_aapt2 $patched_apk && $zipalign $patched_apk7copy $patched_apk7"; fi
         if [ "$build_mode" = apk ] && [ ! "$OS" = Android ]; then cmd+=" && $apksigner $patched_apk && $apksigner $patched_apk7"; fi
 	if [ "$OS" = Android ]; then cmd+=" --keystore=ks.keystore --keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --keystore-entry-alias=jhc --custom-aapt2-binary=${AAPT2}"; fi
