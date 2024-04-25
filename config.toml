@@ -18,6 +18,18 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
 excluded-patches = "'Theme' 'Shorts overlay buttons' 'Tuck away preferences'"
 
+[Darker-MaterialYou]
+app-name = "darker-materialyou"
+patches-source = "anddea/revanced-patches"
+integrations-source = "anddea/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+rv-brand = "anddea"
+options-json = "darker-materialyou-rvx.json"
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = "'MaterialYou'"
+excluded-patches = "'Shorts overlay buttons' 'Tuck away preferences'"
+
 [Black]
 app-name = "og-black"
 patches-source = "anddea/revanced-patches"
@@ -54,6 +66,18 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = ""
 
+[Darker-MaterialYou-rvm]
+app-name = "darker-materiialyou"
+patches-source = "MarcaDian/revanced-patches"
+integrations-source = "MarcaDian/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv-marcad"
+options-json = "darker-materialyou.json"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = ""
+
 [Black-rvm]
 app-name = "blaack"
 patches-source = "MarcaDian/revanced-patches"
@@ -83,6 +107,7 @@ integrations-source = "kitadai31/revanced-integrations"
 cli-source = "kitadai31/rvcli"
 rv-brand = "rvx-a6-7"
 version = "17.34.36"
+riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
@@ -95,6 +120,7 @@ integrations-source = "kitadai31/revanced-integrations"
 cli-source = "kitadai31/rvcli"
 rv-brand = "rvx-a6-7"
 version = "17.34.36"
+riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
