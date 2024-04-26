@@ -9,5 +9,5 @@ Patches: anddea/revanced-patches-2.223.0.jar
 [Changelog](https://github.com/anddea/revanced-patches/releases/tag/v2.223.0)  
 
 Skipped:  
-Patches: MarcaDian/revanced-patches-4.5.0m.jar  
+Patches: MarcaDian/revanced-patches-4.4.0m.jar  
 Patches: kitadai31/revanced-patches-2.160.9.jar    
