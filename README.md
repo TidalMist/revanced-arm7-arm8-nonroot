@@ -64,9 +64,9 @@ Install [v0.14.40-beta](https://github.com/ImranR98/Obtainium/releases/tag/v0.14
  
 Paste app source url https://github.com/TidalMist/revanced-arm7-arm8-nonroot and in field **Filter apks by regular expression** write
 
-for ReVanced Extended `material` or `darker-matterial` or `black` or `dark`,
+for ReVanced Extended `material` or `da-rker-matterial` or `black` or `dark`,
 
-for ReVanced `materiial` or `darker-materiiial` or `blaack` or `daark`,
+for ReVanced `materiial` or `d-arker-materiiial` or `blaack` or `daark`,
 
 for ReVanced Extended Android6-7 `bllack` or `darrk`
 
