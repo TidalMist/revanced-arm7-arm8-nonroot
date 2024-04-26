@@ -20,7 +20,7 @@ included-patches = "'MaterialYou'"
 excluded-patches = "'Theme' 'Shorts overlay buttons' 'Tuck away preferences'"
 
 [Darker-MaterialYou]
-app-name = "darker-materialyou"
+app-name = "darker-matterialyou"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
@@ -68,7 +68,7 @@ included-patches = ""
 excluded-patches = ""
 
 [Darker-MaterialYou-rvm]
-app-name = "darker-materiialyou"
+app-name = "darker-materiiialyou"
 patches-source = "MarcaDian/revanced-patches"
 integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
