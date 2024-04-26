@@ -43,11 +43,15 @@
 <sub>ReVanced Extended</sub><br>
 [<ins>`Black`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22black%5C%22%7D%22%7D) &nbsp; [<ins>`Dark`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22dark%5C%22%7D%22%7D)
 
-[<ins>`MaterialYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22material%5C%22%7D%22%7D)</br></h1><h1>
+[<ins>`MaterialYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22material%5C%22%7D%22%7D)</br>
+
+[<ins>`DarkerMatYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22darker-material%5C%22%7D%22%7D)</h1><h1>
 <sub>ReVanced</sub><br>
 [<ins>`Black`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.revanced.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22blaack%5C%22%7D%22%7D) &nbsp; [<ins>`Dark`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.revanced.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22daark%5C%22%7D%22%7D)
 
-[<ins>`MaterialYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.revanced.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22materiial%5C%22%7D%22%7D)</br></h1><h1>
+[<ins>`MaterialYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.revanced.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22materiial%5C%22%7D%22%7D)</br>
+
+[<ins>`DarkerMatYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.revanced.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22darker-materiial%5C%22%7D%22%7D)</h1><h1>
 <sub>ReVanced Extended Android 7</sub><br>
 [<ins>`Black`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22bllack%5C%22%7D%22%7D) &nbsp; [<ins>`Dark`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22darrk%5C%22%7D%22%7D)</br></h1>
 <h1><sub>Android 6</sub></h1></div>
@@ -60,9 +64,9 @@ Install [v0.14.40-beta](https://github.com/ImranR98/Obtainium/releases/tag/v0.14
  
 Paste app source url https://github.com/TidalMist/revanced-arm7-arm8-nonroot and in field **Filter apks by regular expression** write
 
-for ReVanced Extended `material` or `black` or `dark`,
+for ReVanced Extended `material` or `darker-material` or `black` or `dark`,
 
-for ReVanced `materiial` or `blaack` or `daark`,
+for ReVanced `materiial` or `darker-materiial` or `blaack` or `daark`,
 
 for ReVanced Extended Android6-7 `bllack` or `darrk`
 
