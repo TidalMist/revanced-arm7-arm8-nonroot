@@ -148,7 +148,7 @@ config_update() {
 
 _req() {
 	if [ "$2" = - ]; then
-		wget -nv -O "$2" --header="$3" "$1"
+		wget -nv -nc -O "$2" --header="$3" "$1"
 	else
 		local dlp
 		dlp="$(dirname "$2")/tmp.$(basename "$2")"
@@ -156,7 +156,7 @@ _req() {
 			while [ -f "$dlp" ]; do sleep 1; done
 			return
 		fi
-		wget -nv -O "$dlp" --header="$3" "$1" || return 1
+		wget -nv -nc -O "$dlp" --header="$3" "$1" || return 1
 		mv -f "$dlp" "$2"
 	fi
 }
