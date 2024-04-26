@@ -1,0 +1,24 @@
+[
+  {
+    "patchName": "Custom package name",
+    "options": [
+      {
+        "key": "PackageNameYouTube",
+        "value": "app.rvx.android.youtube"
+      }
+    ]
+  },
+  {
+    "patchName": "Theme",
+    "options": [
+      {
+        "key": "DarkThemeBackgroundColor",
+        "value": "@color/m3_ref_palette_dynamic_neutral_variant6"
+      },
+      {
+        "key": "LightThemeBackgroundColor",
+        "value": "@color/m3_ref_palette_dynamic_neutral_variant98"
+      }
+    ]
+  }
+]
