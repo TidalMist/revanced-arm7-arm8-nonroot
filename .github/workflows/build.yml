@@ -212,7 +212,7 @@ jobs:
 
    
       - name: Delete older releases rv-marcad
-        uses: dev-drprasad/delete-older-releases@v0.3.3
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 1
           delete_tag_pattern: "-rv-marcad"
@@ -222,7 +222,7 @@ jobs:
 
   
       - name: Delete older releases rvx-a6-7
-        uses: dev-drprasad/delete-older-releases@v0.3.3
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 1
           delete_tag_pattern: "-rvx-a6-7"
@@ -231,7 +231,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete older releases anddea
-        uses: dev-drprasad/delete-older-releases@v0.3.3
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 1
           delete_tag_pattern: "-anddea"
