@@ -35,46 +35,35 @@ jobs:
             fi
           fi
 
-      - name: Get next version code
-        id: next_ver_code
-     #   env:
-     #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "NEXT_VER_CODE=$(openssl rand -hex 1)" >> $GITHUB_OUTPUT
-     
-     #    TAG=$(gh release list -L 1 | awk -F '\t' '{print $3}')
-     #    if [ -z "$TAG" ]; then TAG=0; fi
-          
-
       - name: Build modules/APKs
         run: ./build.sh config.toml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-          NEXT_VER_CODE: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
 
       - name: Get output
         id: get_output
         run: |
           DELIM="$(openssl rand -hex 3)"
 
-          if ! grep -qPoz 'Skipped[\s\S]*anddea' build.md && grep -qom1 '"anddea"' ./config.toml; then
-          echo "REX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
+          if ! grep -qPoz 'Skipped[\s\S]*anddea' build.md && grep -qom1 '"rvx"' ./config.toml; then
+          echo "RVX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Po '(?<=Dark: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=a\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: anddea $(grep -Po '(?<=a\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Integrations: $(grep -Po '(?<=a\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
-          grep 'ReVanced MicroG' build.md >> "$GITHUB_OUTPUT"
+          grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
-          if ! grep -qPoz 'Skipped[\s\S]*MarcaDian' build.md && grep -qom1 '"rv-marcad"' ./config.toml; then
-          echo "RVM_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
-          grep -Po '(?<=Dark-rvm: ).*' build.md >> "$GITHUB_OUTPUT"
+          if ! grep -qPoz 'Skipped[\s\S]*MarcaDian' build.md && grep -qom1 '"rv"' ./config.toml; then
+          echo "RV_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
+          grep -Po '(?<=Dark-rv: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/MarcaDian/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: MarcaDian $(grep -Po '(?<=n\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Integrations: $(grep -Po '(?<=n\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
-          grep 'ReVanced MicroG' build.md >> "$GITHUB_OUTPUT"
+          grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if ! grep -qPoz 'Skipped[\s\S]*kitadai31' build.md && grep -qom1 '"rvx-a6-7"' ./config.toml; then
@@ -84,17 +73,16 @@ jobs:
           echo CLI: kitadai31 $(grep -Pom1 '(?<=1\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: kitadai31 $(grep -Po '(?<=1\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Integrations: $(grep -Po '(?<=1\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
-          grep 'ReVanced MicroG' build.md >> "$GITHUB_OUTPUT"
+          grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
-          echo "REX_TAG=$(grep -Pom1 '(?<=a\/revanced-patches-).*(?=\.jar)' build.md)-anddea" >> "$GITHUB_OUTPUT"
-          echo "RVM_TAG=$(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md)-rv-marcad" >> "$GITHUB_OUTPUT"
+          echo "RVX_TAG=$(grep -Pom1 '(?<=a\/revanced-patches-).*(?=\.jar)' build.md)-rvx" >> "$GITHUB_OUTPUT"
+          echo "RV_TAG=$(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md)-rv" >> "$GITHUB_OUTPUT"
           echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/revanced-patches-).*(?=\.jar)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
           
           echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
           cat build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}" >> "$GITHUB_OUTPUT"
-          cp -f build.md build.tmp
 
       - name: Upload rvx-a6-7 to release
         if: ${{ steps.get_output.outputs.RVX_A6_7_LOG != '' }}
@@ -109,132 +97,69 @@ jobs:
           overwrite: true
           make_latest: false
 
-      - name: Upload rv-marcad to release
-        if: ${{ steps.get_output.outputs.RVM_LOG != '' }}
+      - name: Upload rv to release
+        if: ${{ steps.get_output.outputs.RV_LOG != '' }}
         uses: svenstaro/upload-release-action@v2
         with:
-          body: ${{ steps.get_output.outputs.RVM_LOG }}
+          body: ${{ steps.get_output.outputs.RV_LOG }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*rv-marcad*
+          file: ./build/*rv.apk
           release_name: ReVanced
-          tag: ${{ steps.get_output.outputs.RVM_TAG }}
+          tag: ${{ steps.get_output.outputs.RV_TAG }}
           file_glob: true
           overwrite: true
           make_latest: false
 
-      - name: Upload anddea to release
-        if: ${{ steps.get_output.outputs.REX_LOG != '' }}
+      - name: Upload rvx to release
+        if: ${{ steps.get_output.outputs.RVX_LOG != '' }}
         uses: svenstaro/upload-release-action@v2
         with:
-          body: ${{ steps.get_output.outputs.REX_LOG }}
+          body: ${{ steps.get_output.outputs.RVX_LOG }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*anddea*
+          file: ./build/*rvx.apk
           release_name: ReVanced Extended
-          tag: ${{ steps.get_output.outputs.REX_TAG }}
+          tag: ${{ steps.get_output.outputs.RVX_TAG }}
           file_glob: true
           overwrite: true
           make_latest: true
 
-      - name: Update changelog and Magisk update json
+      - name: Update changelog
         id: update_config
         run: |
           git checkout -f update || git switch --discard-changes --orphan update
-          cp -f build.tmp build.md
-          get_update_json() {
-            echo "{
-            \"version\": \"$1\",
-            \"versionCode\": ${{ steps.next_ver_code.outputs.NEXT_VER_CODE}},
-            \"zipUrl\": \"$2\",
-            \"changelog\": \"https://raw.githubusercontent.com/$GITHUB_REPOSITORY/update/build.md\"
-          }"
-          }
-
-          cd build || { echo "build folder not found"; exit 1; }
-          for OUTPUT in *magisk*.zip; do
-            [ "$OUTPUT" = "*magisk*.zip" ] && continue
-            ZIP_S=$(unzip -p "$OUTPUT" module.prop)
-            if ! UPDATE_JSON=$(echo "$ZIP_S" | grep updateJson); then continue; fi
-            UPDATE_JSON="${UPDATE_JSON##*/}"
-            VER=$(echo "$ZIP_S" | grep version=)
-            VER="${VER##*=}"
-            DLURL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}/${OUTPUT}"
-            get_update_json "$VER" "$DLURL" >"../$UPDATE_JSON"
-          done
-          cd ..
-
-          find . -name "*-update.json" | grep . || : >dummy-update.json
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: update
           skip_checkout: true
-          file_pattern: build.md *-update.json
-          commit_message: Bump version ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
-
-      - name: Report to Telegram
-        env:
-          TG_TOKEN: ${{ secrets.TG_TOKEN }}
-        if: env.TG_TOKEN != null
-        run: |
-          cd build || { echo "build folder not found"; exit 1; }
-
-          TG_CHAT="@rvc_magisk"
-          NL=$'\n'
-          APKS=""
-          MODULES=""
-          for OUTPUT in *; do
-            DL_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}/${OUTPUT}"
-            if [[ $OUTPUT = *.apk ]]; then
-              APKS+="${NL}📦[${OUTPUT}](${DL_URL})"
-            elif [[ $OUTPUT = *.zip ]]; then
-              MODULES+="${NL}📦[${OUTPUT}](${DL_URL})"
-            fi
-          done
-          MODULES=${MODULES#"$NL"}
-          APKS=${APKS#"$NL"}
-
-          BODY="$(sed 's/^\* \*\*/↪ \*\*/g; s/^\* `/↪ \*\*/g; s/`/\*/g; s/^\* /\↪/g; s/\*\*/\*/g; s/###//g; s/^- /↪ /g; /^==/d;' ../build.md)"
-          MSG="*New build!*
-
-          ${BODY}
-
-          *▼ Download Links:*
-          Modules:
-          ${MODULES}
-
-          APKs:
-          ${APKS}
-          "
-          echo "'$MSG'"
-          MSG=${MSG:0:9450}
-          POST="https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
-          curl -X POST --data-urlencode "parse_mode=Markdown" --data-urlencode "disable_web_page_preview=true" --data-urlencode "text=${MSG}" --data-urlencode "chat_id=${TG_CHAT}" "$POST"
-
+          file_pattern: build.md
    
-      - name: Delete older releases rv-marcad
-        uses: dev-drprasad/delete-older-releases@v0.3.3
+      - name: Delete older releases rv
+        if: ${{ steps.get_output.outputs.RV_LOG != '' }}
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 1
-          delete_tag_pattern: "-rv-marcad"
+          delete_tag_pattern: "rv$"
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   
       - name: Delete older releases rvx-a6-7
-        uses: dev-drprasad/delete-older-releases@v0.3.3
+        if: ${{ steps.get_output.outputs.RVX_A6_7_LOG != '' }}
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 1
-          delete_tag_pattern: "-rvx-a6-7"
+          delete_tag_pattern: "rvx-a6-7"
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete older releases anddea
-        uses: dev-drprasad/delete-older-releases@v0.3.3
+      - name: Delete older releases rvx
+        if: ${{ steps.get_output.outputs.RVX_LOG != '' }}
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 1
-          delete_tag_pattern: "-anddea"
+          delete_tag_pattern: "rvx$"
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
