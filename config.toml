@@ -1,102 +1,99 @@
 parallel-jobs = 1
-enable-magisk-update = false   # set this to false if you do not want to receive updates for the module in magisk app
-riplib = false
-# add 'enabled = false' for not patching a specific app or remove it from the config
-# see https://github.com/j-hc/revanced-magisk-module/blob/main/CONFIG.md for more detailed explanations
-
-# you can use rvmm-config-gen to generate a config
-# cli-source = "inotia00/revanced-cli"
 
 [Material-You]
 app-name = "og-material-you"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
-cli-source = "ReVanced/revanced-cli"
-rv-brand = "anddea"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx"
 options-json = "packagename.json"
+riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
-excluded-patches = "'Theme' 'Shorts overlay buttons' 'Tuck away preferences'"
+excluded-patches = "'Theme' 'Shorts overlay buttons'"
 
 [Darker-MaterialYou]
 app-name = "da-rker-matterialyou"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
-cli-source = "ReVanced/revanced-cli"
-rv-brand = "anddea"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx"
 options-json = "darker-materialyou-rvx.json"
+riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
-excluded-patches = "'Shorts overlay buttons' 'Tuck away preferences'"
+excluded-patches = "'Shorts overlay buttons'"
 
 [Black]
 app-name = "og-black"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
-cli-source = "ReVanced/revanced-cli"
-rv-brand = "anddea"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx"
 options-json = "packagename.json"
+riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Shorts overlay buttons' 'Tuck away preferences'"
+excluded-patches = "'Shorts overlay buttons'"
 
 [Dark]
 app-name = "og-dark"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
-cli-source = "ReVanced/revanced-cli"
-rv-brand = "anddea"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx"
 options-json = "packagename.json"
+riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Theme' 'Shorts overlay buttons' 'Tuck away preferences'"
+excluded-patches = "'Theme' 'Shorts overlay buttons'"
 
-[MaterialYou-rvm]
+[MaterialYou-rv]
 app-name = "materiialyou"
 patches-source = "MarcaDian/revanced-patches"
 integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
-rv-brand = "rv-marcad"
+rv-brand = "rv"
 options-json = "materialyou.json"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = ""
 
-[Darker-MaterialYou-rvm]
+[Darker-MaterialYou-rv]
 app-name = "d-arker-materiiialyou"
 patches-source = "MarcaDian/revanced-patches"
 integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
-rv-brand = "rv-marcad"
+rv-brand = "rv"
 options-json = "darker-materialyou.json"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = ""
 
-[Black-rvm]
+[Black-rv]
 app-name = "blaack"
 patches-source = "MarcaDian/revanced-patches"
 integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
-rv-brand = "rv-marcad"
+rv-brand = "rv"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = ""
 
-[Dark-rvm]
+[Dark-rv]
 app-name = "daark"
 patches-source = "MarcaDian/revanced-patches"
 integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
-rv-brand = "rv-marcad"
+rv-brand = "rv"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = "'Theme'"
