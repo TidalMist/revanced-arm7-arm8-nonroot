@@ -39,7 +39,7 @@
 ## Get updates
 >Notifications, **A12+ background auto update**, shizuku, ~root~. +f-droid and other app sources
 >
->It will download your arm architecture
+>It will download your cpu architecture
 
 **These import links work on devices with [Obtainium](https://github.com/ImranR98/Obtainium) installed**<div align="center"><h1>
 <sub>ReVanced Extended</sub><br>
