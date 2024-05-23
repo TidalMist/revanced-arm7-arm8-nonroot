@@ -83,6 +83,7 @@ jobs:
           echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
           cat build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}" >> "$GITHUB_OUTPUT"
+          cp -f build.md build.tmp
 
       - name: Upload rvx-a6-7 to release
         if: ${{ steps.get_output.outputs.RVX_A6_7_LOG != '' }}
@@ -127,6 +128,7 @@ jobs:
         id: update_config
         run: |
           git checkout -f update || git switch --discard-changes --orphan update
+          cp -f build.tmp build.md
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
