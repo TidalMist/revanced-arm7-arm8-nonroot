@@ -306,19 +306,19 @@ patch_apk() {
         declare -r tdir=$(mktemp -d -p $TEMP_DIR)
         local sdk_ver=$(ls -vr ${ANDROID_HOME}/build-tools | grep -wm1 .)
 	local apksign="${ANDROID_HOME}/build-tools/${sdk_ver}/apksigner sign -v --v4-signing-enabled false --cert ./ks.jhc.x509.pem --key ./ks.jhc.pk8"
-        local arm8apk="${BUILD_DIR}/${app_name_l}-arm64-v8a-${rv_brand_f}.apk"
-	local arm7apk="${BUILD_DIR}/${app_name_l}-armeabi-v7a-${rv_brand_f}.apk"
-        local x86_64apk="${BUILD_DIR}/${app_name_l}-x86_64-${rv_brand_f}.apk"
-	local x86apk="${BUILD_DIR}/${app_name_l}-x86-${rv_brand_f}.apk"
-        local tmp_apk="${TEMP_DIR}/${app_name_l}-tmp.apk"
+        local zipalign="${ANDROID_HOME}/build-tools/${sdk_ver}/zipalign -p -f 4"
+        local arm8apk="/${app_name_l}-arm64-v8a-${rv_brand_f}.apk"
+	local arm7apk="/${app_name_l}-armeabi-v7a-${rv_brand_f}.apk"
+        local x86_64apk="/${app_name_l}-x86_64-${rv_brand_f}.apk"
+	local x86apk="/${app_name_l}-x86-${rv_brand_f}.apk"
 	local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
 	local cmd="java -jar $rv_cli_jar patch $stock_input -p -o $patched_apk -b $rv_patches_jar $patcher_args --options=$options_json"
 	if [ "${patches_src}" = kitadai31/revanced-patches-android6-7 ]; then cmd+=" -r $tdir"; fi
-	local cmd+=" && ${ANDROID_HOME}/build-tools/${sdk_ver}/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $tmp_apk && \
-${ANDROID_HOME}/build-tools/${sdk_ver}/zipalign -p -f 4 $tmp_apk $arm8apk && \
-cp -f $arm8apk $arm7apk && cp -f $arm8apk $x86_64apk && cp -f $arm8apk $x86apk && \
-zip -dq $arm8apk lib/arme\* lib/x\* && zip -dq $arm7apk lib/arm6\* lib/x\* && zip -dq $x86_64apk lib/a\* lib/x86/\* && zip -dq $x86apk lib/a\* lib/x86_\* && \
-$apksign $arm8apk && $apksign $arm7apk && $apksign $x86_64apk && $apksign $x86apk"
+	local cmd+=" && ${ANDROID_HOME}/build-tools/${sdk_ver}/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o temp${arm8apk} && \
+cp -f temp${arm8apk} temp${arm7apk} && cp -f temp${arm8apk} temp${x86_64apk} && cp -f temp${arm8apk} temp${x86apk} && \
+zip -dq temp${arm8apk} lib/arme\* lib/x\* && zip -dq temp${arm7apk} lib/arm6\* lib/x\* && zip -dq temp${x86_64apk} lib/a\* lib/x86/\* && zip -dq temp${x86apk} lib/a\* lib/x86_\* && \
+$zipalign temp${arm8apk} build${arm8apk} && $zipalign temp${arm7apk} build${arm7apk} && $zipalign temp${x86_64apk} build${x86_64apk} && $zipalign temp${x86apk} build${x86apk} && \
+$apksign build${arm8apk} && $apksign build${arm7apk} && $apksign build${x86_64apk} && $apksign build${x86apk}"
 	pr "$cmd"
 	eval "$cmd"
 	[ -f "$patched_apk" ]
