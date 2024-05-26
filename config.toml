@@ -2,8 +2,8 @@ parallel-jobs = 1
 
 [MaterialYou-rvx]
 app-name = "og-material-you"
-patches-source = "anddea/revanced-patches"
-integrations-source = "anddea/revanced-integrations"
+patches-source = "inotia00/revanced-patches"
+integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
 options-json = "packagename.json"
@@ -11,12 +11,12 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
-excluded-patches = "'Theme' 'Shorts overlay buttons'"
+excluded-patches = "'Theme' 'Custom branding icon YouTube' 'Custom branding name YouTube'"
 
 [Darker-MaterialYou-rvx]
 app-name = "da-rker-matterialyou"
-patches-source = "anddea/revanced-patches"
-integrations-source = "anddea/revanced-integrations"
+patches-source = "inotia00/revanced-patches"
+integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
 options-json = "darker-materialyou-rvx.json"
@@ -24,12 +24,12 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
-excluded-patches = "'Shorts overlay buttons'"
+excluded-patches = "'Custom branding icon YouTube' 'Custom branding name YouTube'"
 
 [Black-rvx]
 app-name = "og-black"
-patches-source = "anddea/revanced-patches"
-integrations-source = "anddea/revanced-integrations"
+patches-source = "inotia00/revanced-patches"
+integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
 options-json = "packagename.json"
@@ -37,12 +37,12 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Shorts overlay buttons'"
+excluded-patches = "'Custom branding icon YouTube' 'Custom branding name YouTube'"
 
 [Dark-rvx]
 app-name = "og-dark"
-patches-source = "anddea/revanced-patches"
-integrations-source = "anddea/revanced-integrations"
+patches-source = "inotia00/revanced-patches"
+integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
 options-json = "packagename.json"
@@ -50,7 +50,7 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Theme' 'Shorts overlay buttons'"
+excluded-patches = "'Theme' 'Custom branding icon YouTube' 'Custom branding name YouTube'"
 
 [MaterialYou-rv]
 app-name = "materiialyou"
