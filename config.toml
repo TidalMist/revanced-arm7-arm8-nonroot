@@ -1,6 +1,6 @@
 parallel-jobs = 1
 
-[Material-You]
+[MaterialYou-rvx]
 app-name = "og-material-you"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
@@ -13,7 +13,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
 excluded-patches = "'Theme' 'Shorts overlay buttons'"
 
-[Darker-MaterialYou]
+[Darker-MaterialYou-rvx]
 app-name = "da-rker-matterialyou"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
@@ -26,7 +26,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
 excluded-patches = "'Shorts overlay buttons'"
 
-[Black]
+[Black-rvx]
 app-name = "og-black"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
@@ -39,7 +39,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = "'Shorts overlay buttons'"
 
-[Dark]
+[Dark-rvx]
 app-name = "og-dark"
 patches-source = "anddea/revanced-patches"
 integrations-source = "anddea/revanced-integrations"
