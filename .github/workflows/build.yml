@@ -91,7 +91,7 @@ jobs:
         with:
           body: ${{ steps.get_output.outputs.RVX_A6_7_LOG }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*rvx-a6-7*
+          file: ./build/*rvx-a6-7.apk
           release_name: ReVanced Extended Android6-7
           tag: ${{ steps.get_output.outputs.RVX_A6_7_TAG }}
           file_glob: true
