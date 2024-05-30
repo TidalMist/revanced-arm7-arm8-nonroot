@@ -51,8 +51,8 @@ jobs:
           grep -Pom1 '(?<=x: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/inotia00/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=0\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: inotia00 $(grep -Po '(?<=0\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Integrations: $(grep -Po '(?<=0\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: inotia00 $(grep -Pom1 '(?<=0\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo Integrations: $(grep -Pom1 '(?<=0\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
           grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
@@ -61,8 +61,8 @@ jobs:
           grep -Pom1 '(?<=v: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/MarcaDian/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: MarcaDian $(grep -Po '(?<=n\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Integrations: $(grep -Po '(?<=n\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: MarcaDian $(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo Integrations: $(grep -Pom1 '(?<=n\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
           grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
@@ -71,8 +71,8 @@ jobs:
           grep -Pom1 '(?<=7: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v'$(grep -Pom1 '(?<=1\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: kitadai31 $(grep -Pom1 '(?<=1\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: kitadai31 $(grep -Po '(?<=1\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Integrations: $(grep -Po '(?<=1\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: kitadai31 $(grep -Pom1 '(?<=1\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo Integrations: $(grep -Pom1 '(?<=1\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
           grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
