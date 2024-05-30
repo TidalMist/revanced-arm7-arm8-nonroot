@@ -314,7 +314,7 @@ patch_apk() {
         local cpt="cp $TEMP_DIR$arm8apk $TEMP_DIR" zipd="zip -dq $TEMP_DIR" algn="$align $TEMP_DIR" sign="$apksign $BUILD_DIR"
         local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
         local cmd="java -jar $rv_cli_jar patch $stock_input -p -o $patched_apk -b $rv_patches_jar $patcher_args --options=$options_json $rtdir \
-&& ${build_tools}/aapt2 optimize --target-densities xhdpi,xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
+&& ${build_tools}/aapt2 optimize --target-densities xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
 && $cpt$arm7apk && $cpt$x86_64apk && $cpt$x86apk \
 && $zipd$arm8apk lib/arme\* lib/x\* && $zipd$arm7apk lib/arm6\* lib/x\* && $zipd$x86_64apk lib/a\* lib/x86/\* && $zipd$x86apk lib/a\* lib/x86_\* \
 && $algn$arm8apk $BUILD_DIR$arm8apk && $algn$arm7apk $BUILD_DIR$arm7apk && $algn$x86_64apk $BUILD_DIR$x86_64apk && $algn$x86apk $BUILD_DIR$x86apk \
