@@ -10,5 +10,5 @@ Patches: MarcaDian/revanced-patches-4.8.3m-dev.1.1.jar
 [Changelog](https://github.com/MarcaDian/revanced-patches/releases/tag/v4.8.3m-dev.1.1)  
 
 Skipped:  
-Patches: inotia00/revanced-patches-4.8.5.jar  
+Patches: inotia00/revanced-patches-1.8.4.jar  
 Patches: kitadai31/revanced-patches-2.160.9.jar    
