@@ -52,6 +52,19 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = "'Theme' 'Custom branding icon YouTube' 'Custom branding name YouTube'"
 
+[Grey-rvx]
+app-name = "grey"
+patches-source = "inotia00/revanced-patches"
+integrations-source = "inotia00/revanced-integrations"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx"
+options-json = "grey-rvx.json"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = "'Custom branding icon YouTube' 'Custom branding name YouTube'"
+
 [MaterialYou-rv]
 app-name = "materiialyou"
 patches-source = "MarcaDian/revanced-patches"
@@ -97,6 +110,18 @@ rv-brand = "rv"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = "'Theme'"
+
+[Grey-rv]
+app-name = "grrey"
+patches-source = "MarcaDian/revanced-patches"
+integrations-source = "MarcaDian/revanced-integrations"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv"
+options-json = "grey.json"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+included-patches = ""
+excluded-patches = ""
 
 [BlackA6-7]
 app-name = "bllack"
