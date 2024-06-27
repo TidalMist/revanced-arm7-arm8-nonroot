@@ -67,8 +67,6 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 
 [MaterialYou-rv]
 app-name = "materiialyou"
-patches-source = "MarcaDian/revanced-patches"
-integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
@@ -79,8 +77,6 @@ excluded-patches = ""
 
 [Darker-MaterialYou-rv]
 app-name = "d-arker-materiiialyou"
-patches-source = "MarcaDian/revanced-patches"
-integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
@@ -91,8 +87,6 @@ excluded-patches = ""
 
 [Black-rv]
 app-name = "blaack"
-patches-source = "MarcaDian/revanced-patches"
-integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
@@ -102,8 +96,6 @@ excluded-patches = ""
 
 [Dark-rv]
 app-name = "daark"
-patches-source = "MarcaDian/revanced-patches"
-integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
@@ -113,8 +105,6 @@ excluded-patches = "'Theme'"
 
 [Grey-rv]
 app-name = "grrey"
-patches-source = "MarcaDian/revanced-patches"
-integrations-source = "MarcaDian/revanced-integrations"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
