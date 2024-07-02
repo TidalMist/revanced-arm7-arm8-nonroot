@@ -11,7 +11,7 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
-excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube'"
+excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Darker-MaterialYou-rvx]
 app-name = "da-rker-matterialyou"
@@ -23,8 +23,8 @@ options-json = "darker-materialyou-rvx.json"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'MaterialYou'"
-excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube'"
+included-patches = "'MaterialYou' 'Theme'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Black-rvx]
 app-name = "og-black"
@@ -36,8 +36,8 @@ options-json = "packagename.json"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube'"
+included-patches = "'Theme'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Dark-rvx]
 app-name = "og-dark"
@@ -50,7 +50,7 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube'"
+excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Grey-rvx]
 app-name = "grey"
@@ -62,8 +62,8 @@ options-json = "grey-rvx.json"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube'"
+included-patches = "'Theme'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [MaterialYou-rv]
 app-name = "materiialyou"
@@ -71,9 +71,10 @@ cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
 options-json = "materialyou.json"
+riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = ""
+included-patches = "'Theme'"
+excluded-patches = "'Change header' 'Custom branding'"
 
 [Darker-MaterialYou-rv]
 app-name = "d-arker-materiiialyou"
@@ -81,37 +82,41 @@ cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
 options-json = "darker-materialyou.json"
+riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = ""
+included-patches = "'Theme'"
+excluded-patches = "'Change header' 'Custom branding'"
 
 [Black-rv]
 app-name = "blaack"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
+riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = ""
+included-patches = "'Theme'"
+excluded-patches = "'Change header' 'Custom branding'"
 
 [Dark-rv]
 app-name = "daark"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
+riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'Theme'"
+excluded-patches = "'Theme' 'Change header' 'Custom branding'"
 
 [Grey-rv]
 app-name = "grrey"
 cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
 rv-brand = "rv"
+riplib = false
 options-json = "grey.json"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = ""
+included-patches = "'Theme'"
+excluded-patches = "'Change header' 'Custom branding'"
 
 [BlackA6-7]
 app-name = "bllack"
@@ -123,8 +128,8 @@ version = "17.34.36"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = "'check-android-version' 'return-youtube-dislike' 'custom-branding-name' 'custom-branding-icon-afn-red'"
+included-patches = "'theme'"
+excluded-patches = "'check-android-version' 'return-youtube-dislike' 'custom-branding-name' 'custom-branding-icon-afn-red' 'custom-branding-icon-afn-blue' 'custom-branding-icon-revancify'"
 
 [DarkA6-7]
 app-name = "darrk"
@@ -137,4 +142,4 @@ riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
-excluded-patches = "'check-android-version' 'return-youtube-dislike' 'theme' 'custom-branding-name' 'custom-branding-icon-afn-red'"
+excluded-patches = "'check-android-version' 'return-youtube-dislike' 'theme' 'custom-branding-name' 'custom-branding-icon-afn-red' 'custom-branding-icon-afn-blue' 'custom-branding-icon-revancify'"
