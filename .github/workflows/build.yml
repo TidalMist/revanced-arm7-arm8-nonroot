@@ -56,13 +56,13 @@ jobs:
           grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
-          if ! grep -qPoz 'Skipped[\s\S]*MarcaDian' build.md && grep -qom1 '"rv"' ./config.toml; then
+          if ! grep -qPoz 'Skipped[\s\S]*ReVanced' build.md && grep -qom1 '"rv"' ./config.toml; then
           echo "RV_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=v: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/MarcaDian/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: MarcaDian $(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Integrations: $(grep -Pom1 '(?<=n\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: ReVanced $(grep -Pom1 '(?<=d\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo Integrations: $(grep -Pom1 '(?<=d\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
           grep 'Microg' build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
@@ -77,7 +77,7 @@ jobs:
           echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
           echo "RVX_TAG=$(grep -Pom1 '(?<=0\/revanced-patches-).*(?=\.jar)' build.md)-rvx" >> "$GITHUB_OUTPUT"
-          echo "RV_TAG=$(grep -Pom1 '(?<=n\/revanced-patches-).*(?=\.jar)' build.md)-rv" >> "$GITHUB_OUTPUT"
+          echo "RV_TAG=$(grep -Pom1 '(?<=d\/revanced-patches-).*(?=\.jar)' build.md)-rv" >> "$GITHUB_OUTPUT"
           echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/revanced-patches-).*(?=\.jar)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
           
           echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
