@@ -11,5 +11,5 @@ Patches: inotia00/revanced-patches-4.10.1.jar
 [Changelog](https://github.com/inotia00/revanced-patches/releases/tag/v4.10.1)  
 
 Skipped:  
-Patches: MarcaDian/revanced-patches-4.10.1m-dev.1.jar  
-Patches: kitadai31/revanced-patches-2.160.10.jar    
+Patches: ReVanced/revanced-patches-4.10.1m-dev.1.jar  
+Patches: kitadai31/revanced-patches-2.160.9.jar    
