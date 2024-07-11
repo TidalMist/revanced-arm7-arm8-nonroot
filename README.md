@@ -49,7 +49,6 @@
 
 Install [v0.14.40-beta](https://github.com/ImranR98/Obtainium/releases/tag/v0.14.40-beta) remove obtainium from obtainium because no updates for A6, then paste [app source url](https://github.com/TidalMist/revanced-arm7-arm8-nonroot) and in field **Filter apks by regular expression** write `bllack` or `darrk`
 
-> ReVanced with UA / RU / BE settings translation by MarcaDian
 <details><summary>If links doesn't work</summary>
  
 Paste app source url https://github.com/TidalMist/revanced-arm7-arm8-nonroot and in field **Filter apks by regular expression** write
