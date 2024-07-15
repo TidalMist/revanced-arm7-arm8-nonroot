@@ -12,6 +12,7 @@ build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou'"
 excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+version = "19.25.39"
 
 [Darker-MaterialYou-rvx]
 app-name = "da-rker-matterialyou"
@@ -25,6 +26,7 @@ build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'MaterialYou' 'Theme'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+version = "19.25.39"
 
 [Black-rvx]
 app-name = "og-black"
@@ -38,6 +40,7 @@ build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'Theme'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+version = "19.25.39"
 
 [Dark-rvx]
 app-name = "og-dark"
@@ -51,6 +54,7 @@ build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = ""
 excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+version = "19.25.39"
 
 [Grey-rvx]
 app-name = "grey"
@@ -64,6 +68,7 @@ build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'Theme'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+version = "19.25.39"
 
 [MaterialYou-rv]
 app-name = "materiialyou"
