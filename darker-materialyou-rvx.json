@@ -20,5 +20,14 @@
         "value": "@color/m3_ref_palette_dynamic_neutral_variant98"
       }
     ]
+  },
+  {
+    "patchName": "Change version code",
+    "options": [
+      {
+        "key": "ChangeVersionCode",
+        "value": "true"
+      }
+    ]
   }
 ]
