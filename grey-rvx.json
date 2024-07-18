@@ -22,7 +22,7 @@
     "options": [
       {
         "key": "ChangeVersionCode",
-        "value": "true"
+        "value": true
       }
     ]
   }
