@@ -1,15 +1,12 @@
-MaterialYou-rv: 19.16.39  
-Darker-MaterialYou-rv: 19.16.39  
-Black-rv: 19.16.39  
-Dark-rv: 19.16.39  
-Grey-rv: 19.16.39  
+BlackA6-7: 17.34.36  
+DarkA6-7: 17.34.36  
 
 Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube  
-CLI: ReVanced/revanced-cli-4.6.0-all.jar  
-Integrations: ReVanced/revanced-integrations-1.13.0.apk  
-Patches: ReVanced/revanced-patches-4.13.3.jar  
-[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v4.13.3)  
+CLI: kitadai31/revanced-cli-3.1.4-all.jar  
+Integrations: kitadai31/revanced-integrations-0.96.11.apk  
+Patches: kitadai31/revanced-patches-2.160.11.jar  
+[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v2.160.11)  
 
 Skipped:  
 Patches: inotia00/revanced-patches-4.12.3.jar  
-Patches: kitadai31/revanced-patches-2.160.10.jar    
+Patches: ReVanced/revanced-patches-4.13.3.jar    
