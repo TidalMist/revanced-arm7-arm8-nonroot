@@ -11,5 +11,4 @@ Patches: inotia00/revanced-patches-4.16.1.jar
 [Changelog](https://github.com/inotia00/revanced-patches/releases/tag/v4.16.1)  
 
 Skipped:  
-Patches: ReVanced/revanced-patches-4.17.0.jar  
 Patches: kitadai31/revanced-patches-2.160.11.jar                
