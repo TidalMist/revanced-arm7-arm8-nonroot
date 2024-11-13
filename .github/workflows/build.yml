@@ -53,17 +53,16 @@ jobs:
           echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: inotia00 $(grep -Pom1 '(?<=0\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Integrations: $(grep -Pom1 '(?<=0\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
-          grep 'Microg' build.md >> "$GITHUB_OUTPUT"
+          echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if ! grep -qPoz 'Skipped[\s\S]*ReVanced' build.md && grep -qom1 '"rv"' ./config.toml; then
           echo "RV_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=v: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/revanced-patches-).*(?=\.jar)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: ReVanced $(grep -Pom1 '(?<=d\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Integrations: $(grep -Pom1 '(?<=d\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
-          grep 'Microg' build.md >> "$GITHUB_OUTPUT"
+          echo Patches: ReVanced $(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
+          echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if ! grep -qPoz 'Skipped[\s\S]*kitadai31' build.md && grep -qom1 '"rvx-a6-7"' ./config.toml; then
@@ -73,11 +72,11 @@ jobs:
           echo CLI: kitadai31 $(grep -Pom1 '(?<=1\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: kitadai31 $(grep -Pom1 '(?<=1\/revanced-patches-).*(?=\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Integrations: $(grep -Pom1 '(?<=1\/revanced-integrations-).*(?=\.apk)' build.md) >> "$GITHUB_OUTPUT"
-          grep 'Microg' build.md >> "$GITHUB_OUTPUT"
+          echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
           echo "RVX_TAG=$(grep -Pom1 '(?<=0\/revanced-patches-).*(?=\.jar)' build.md)-rvx" >> "$GITHUB_OUTPUT"
-          echo "RV_TAG=$(grep -Pom1 '(?<=d\/revanced-patches-).*(?=\.jar)' build.md)-rv" >> "$GITHUB_OUTPUT"
+          echo "RV_TAG=$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)-rv" >> "$GITHUB_OUTPUT"
           echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/revanced-patches-).*(?=\.jar)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
           
           echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
