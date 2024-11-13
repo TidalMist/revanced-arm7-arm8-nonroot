@@ -65,17 +65,6 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'Theme' 'Change version code'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
-[Grey-rv]
-app-name = "grrey"
-cli-source = "ReVanced/revanced-cli"
-build-mode = "apk"
-rv-brand = "rv"
-riplib = false
-options-json = "grey.json"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Theme' 'Change version code'"
-excluded-patches = "'Change header' 'Custom branding'"
-
 [BlackA6-7]
 app-name = "bllack"
 patches-source = "kitadai31/revanced-patches-android6-7"
