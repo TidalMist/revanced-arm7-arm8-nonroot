@@ -65,48 +65,6 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 included-patches = "'Theme' 'Change version code'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
-[MaterialYou-rv]
-app-name = "materiialyou"
-cli-source = "ReVanced/revanced-cli"
-build-mode = "apk"
-rv-brand = "rv"
-options-json = "materialyou.json"
-riplib = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Theme' 'Change version code'"
-excluded-patches = "'Change header' 'Custom branding'"
-
-[Darker-MaterialYou-rv]
-app-name = "d-arker-materiiialyou"
-cli-source = "ReVanced/revanced-cli"
-build-mode = "apk"
-rv-brand = "rv"
-options-json = "darker-materialyou.json"
-riplib = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Theme' 'Change version code'"
-excluded-patches = "'Change header' 'Custom branding'"
-
-[Black-rv]
-app-name = "blaack"
-cli-source = "ReVanced/revanced-cli"
-build-mode = "apk"
-rv-brand = "rv"
-riplib = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Theme' 'Change version code'"
-excluded-patches = "'Change header' 'Custom branding'"
-
-[Dark-rv]
-app-name = "daark"
-cli-source = "ReVanced/revanced-cli"
-build-mode = "apk"
-rv-brand = "rv"
-riplib = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Change version code'"
-excluded-patches = "'Theme' 'Change header' 'Custom branding'"
-
 [Grey-rv]
 app-name = "grrey"
 cli-source = "ReVanced/revanced-cli"
