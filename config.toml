@@ -8,6 +8,7 @@ rv-brand = "rv"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/system_neutral1_900 -OlightThemeBackgroundColor=@android:color/system_neutral1_50"
 riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
 
@@ -19,6 +20,7 @@ rv-brand = "rv"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98"
 riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
 
@@ -30,6 +32,7 @@ rv-brand = "rv"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
 riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
 
@@ -41,6 +44,7 @@ rv-brand = "rv"
 riplib = false
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
 
@@ -52,5 +56,6 @@ rv-brand = "rv"
 riplib = false
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
