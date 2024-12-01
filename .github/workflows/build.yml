@@ -150,7 +150,7 @@ jobs:
         if: ${{ steps.get_output.outputs.RVX_A6_7_LOG != '' }}
         uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
-          keep_latest: 1
+          keep_latest: 2
           delete_tag_pattern: "rvx-a6-7"
           delete_tags: true
         env:
