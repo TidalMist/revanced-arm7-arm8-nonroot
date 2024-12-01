@@ -66,6 +66,7 @@ included-patches = "'Theme' 'Change version code'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [BlackA6-7]
+remove-rv-integrations-checks = false
 app-name = "bllack"
 patches-source = "kitadai31/revanced-patches-android6-7"
 integrations-source = "kitadai31/revanced-integrations"
@@ -79,6 +80,7 @@ included-patches = "'theme'"
 excluded-patches = "'check-android-version' 'return-youtube-dislike' 'custom-branding-name' 'custom-branding-icon-afn-red' 'custom-branding-icon-afn-blue' 'custom-branding-icon-revancify'"
 
 [DarkA6-7]
+remove-rv-integrations-checks = false
 app-name = "darrk"
 patches-source = "kitadai31/revanced-patches-android6-7"
 integrations-source = "kitadai31/revanced-integrations"
