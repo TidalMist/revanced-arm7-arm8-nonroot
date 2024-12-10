@@ -3,92 +3,124 @@ parallel-jobs = 1
 [MaterialYou-rvx]
 app-name = "og-material-you"
 patches-source = "inotia00/revanced-patches"
-integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
-options-json = "packagename.json"
+patcher-args = "-e 'Change version code' -OChangeVersionCode=true"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'MaterialYou' 'Change version code'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'MaterialYou'"
 excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Darker-MaterialYou-rvx]
 app-name = "da-rker-matterialyou"
 patches-source = "inotia00/revanced-patches"
-integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
-options-json = "darker-materialyou-rvx.json"
+patcher-args = "-e 'Theme' -ODarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OLightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98 -e 'Change version code' -OChangeVersionCode=true"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'MaterialYou' 'Theme' 'Change version code'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'MaterialYou'"
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Black-rvx]
 app-name = "og-black"
 patches-source = "inotia00/revanced-patches"
-integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
-options-json = "packagename.json"
+patcher-args = "-e 'Theme' -ODarkThemeBackgroundColor=@android:color/black -e 'Change version code' -OChangeVersionCode=true"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Theme' 'Change version code'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = ""
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Dark-rvx]
 app-name = "og-dark"
 patches-source = "inotia00/revanced-patches"
-integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
-options-json = "packagename.json"
+patcher-args = "-e 'Change version code' -OChangeVersionCode=true"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Change version code'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = ""
 excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [Grey-rvx]
 app-name = "grey"
 patches-source = "inotia00/revanced-patches"
-integrations-source = "inotia00/revanced-integrations"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
-options-json = "grey-rvx.json"
+patcher-args = "-e 'Theme' -ODarkThemeBackgroundColor=#FF212121 -e 'Change version code' -OChangeVersionCode=true"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'Theme' 'Change version code'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = ""
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
-[BlackA6-7]
-remove-rv-integrations-checks = false
-app-name = "bllack"
-patches-source = "kitadai31/revanced-patches-android6-7"
-integrations-source = "kitadai31/revanced-integrations"
-cli-source = "kitadai31/revanced-cli"
-rv-brand = "rvx-a6-7"
-version = "17.34.36"
-riplib = false
+[MaterialYou-rv]
+app-name = "materiialyou"
+cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
+rv-brand = "rv"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/system_neutral1_900 -OlightThemeBackgroundColor=@android:color/system_neutral1_50"
+riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = "'theme'"
-excluded-patches = "'check-android-version' 'return-youtube-dislike' 'custom-branding-name' 'custom-branding-icon-afn-red' 'custom-branding-icon-afn-blue' 'custom-branding-icon-revancify'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
 
-[DarkA6-7]
-remove-rv-integrations-checks = false
-app-name = "darrk"
-patches-source = "kitadai31/revanced-patches-android6-7"
-integrations-source = "kitadai31/revanced-integrations"
-cli-source = "kitadai31/revanced-cli"
-rv-brand = "rvx-a6-7"
-version = "17.34.36"
-riplib = false
+[Darker-MaterialYou-rv]
+app-name = "d-arker-materiiialyou"
+cli-source = "ReVanced/revanced-cli"
 build-mode = "apk"
+rv-brand = "rv"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98"
+riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
-included-patches = ""
-excluded-patches = "'check-android-version' 'return-youtube-dislike' 'theme' 'custom-branding-name' 'custom-branding-icon-afn-red' 'custom-branding-icon-afn-blue' 'custom-branding-icon-revancify'"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Black-rv]
+app-name = "blaack"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
+riplib = false
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Dark-rv]
+app-name = "daark"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv"
+riplib = false
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Grey-rv]
+app-name = "grrey"
+cli-source = "ReVanced/revanced-cli"
+build-mode = "apk"
+rv-brand = "rv"
+riplib = false
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
