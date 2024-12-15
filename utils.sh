@@ -222,10 +222,10 @@ semver_validate() {
 	[ ${#ac} = 0 ]
 }
 get_patch_last_supported_ver() {
-	local pkg_name=$1 inc_sel=$2 _exc_sel=$3 _exclusive=$4 # TODO: resolve using all of these
+	local list_patches=$1 pkg_name=$2 inc_sel=$3 _exc_sel=$4 _exclusive=$5 # TODO: resolve using all of these
 	local op
 	if [ "$inc_sel" ]; then
-		if ! op=$(java -jar "$rv_cli_jar" list-patches "$rv_patches_jar" -f "$pkg_name" -v -p 2>&1 | awk '{$1=$1}1'); then
+		if ! op=$(awk '{$1=$1}1' <<<"$list_patches"); then
 			epr "list-patches: '$op'"
 			return 1
 		fi
@@ -422,7 +422,7 @@ patch_apk() {
         local x86apk="/${app_name_l}-x86-${rv_brand_f}.apk"
         local cpt="cp $TEMP_DIR$arm8apk $TEMP_DIR" zipd="zip -dq $TEMP_DIR" algn="$align $TEMP_DIR" sign="$apksign $BUILD_DIR"
         local stock_input=$1 patched_apk=$2 patcher_args=$3 rv_cli_jar=$4 rv_patches_jar=$5
-        local cmd="java -jar $rv_cli_jar patch $stock_input --purge -o $patched_apk -p $rv_patches_jar $patcher_args \
+        local cmd="env -u GITHUB_REPOSITORY java -jar $rv_cli_jar patch $stock_input --purge -o $patched_apk -p $rv_patches_jar $patcher_args \
 && ${build_tools}/aapt2 optimize --target-densities xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
 && $cpt$arm7apk && $cpt$x86_64apk && $cpt$x86apk \
 && $zipd$arm8apk lib/arme\* lib/x\* && $zipd$arm7apk lib/arm6\* lib/x\* && $zipd$x86_64apk lib/a\* lib/x86/\* && $zipd$x86apk lib/a\* lib/x86_\* \
@@ -477,9 +477,12 @@ build_rv() {
 		epr "empty pkg name, not building ${table}."
 		return 0
 	fi
+	local list_patches
+	list_patches=$(java -jar "$rv_cli_jar" list-patches "$rv_patches_jar" -f "$pkg_name" -v -p 2>&1)
+
 	local get_latest_ver=false
 	if [ "$version_mode" = auto ]; then
-		if ! version=$(get_patch_last_supported_ver "$pkg_name" \
+		if ! version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 			"${args[included_patches]}" "${args[excluded_patches]}" "${args[exclusive_patches]}"); then
 			exit 1
 		elif [ -z "$version" ]; then get_latest_ver=true; fi
@@ -531,15 +534,13 @@ build_rv() {
 	log "${table}: ${version}"
 
 	local microg_patch
-	microg_patch=$(java -jar "$rv_cli_jar" list-patches "$rv_patches_jar" -f "$pkg_name" -v -p 2>&1 |
-		grep "^Name: " | grep -i "gmscore\|microg" || :) microg_patch=${microg_patch#*: }
+	microg_patch=$(grep "^Name: " <<<"$list_patches" | grep -i "gmscore\|microg" || :) microg_patch=${microg_patch#*: }
 	if [ -n "$microg_patch" ] && [[ ${p_patcher_args[*]} =~ $microg_patch ]]; then
 		epr "You cant include/exclude microg patch as that's done by rvmm builder automatically."
 		p_patcher_args=("${p_patcher_args[@]//-[ei] ${microg_patch}/}")
 	fi
 	local spoof_streams_patch
-	spoof_streams_patch=$(java -jar "$rv_cli_jar" list-patches "$rv_patches_jar" -f "$pkg_name" -v -p 2>&1 |
-		grep "^Name: " | grep -i "spoof" | grep -i "streams" || :) spoof_streams_patch=${spoof_streams_patch#*: }
+	spoof_streams_patch=$(grep "^Name: " <<<"$list_patches" | grep -i "spoof" | grep -i "streams" || :) spoof_streams_patch=${spoof_streams_patch#*: }
 	if [ -n "$spoof_streams_patch" ] && [[ ${p_patcher_args[*]} =~ $spoof_streams_patch ]]; then
 		epr "You cant include/exclude spoof stream patch as that's done by rvmm builder automatically."
 		p_patcher_args=("${p_patcher_args[@]//-[ei] ${spoof_streams_patch}/}")
