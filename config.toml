@@ -47,13 +47,13 @@ app-name = "og-dark"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
 rv-brand = "rvx"
-patcher-args = "-e 'Change version code' -OchangeVersionCode=true"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
 build-mode = "apk"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = ""
-excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 remove-rv-integrations-checks = false
 
 [Grey-rvx]
