@@ -4,7 +4,7 @@ parallel-jobs = 1
 app-name = "og-material-you"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
-patches-version = "v5.0.3"
+patches-version = "5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -19,7 +19,7 @@ remove-rv-integrations-checks = false
 app-name = "da-rker-matterialyou"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
-patches-version = "v5.0.3"
+patches-version = "5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98 -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -34,7 +34,7 @@ remove-rv-integrations-checks = false
 app-name = "og-black"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
-patches-version = "v5.0.3"
+patches-version = "5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -49,7 +49,7 @@ remove-rv-integrations-checks = false
 app-name = "og-dark"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
-patches-version = "v5.0.3"
+patches-version = "5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -64,7 +64,7 @@ remove-rv-integrations-checks = false
 app-name = "grey"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
-patches-version = "v5.0.3"
+patches-version = "5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121 -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
