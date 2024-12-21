@@ -1,10 +1,10 @@
 parallel-jobs = 1
 
 [MaterialYou-rvx]
-patches-version = "v5.0.3"
 app-name = "og-material-you"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
+patches-version = "v5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -16,10 +16,10 @@ excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding 
 remove-rv-integrations-checks = false
 
 [Darker-MaterialYou-rvx]
-patches-version = "v5.0.3"
 app-name = "da-rker-matterialyou"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
+patches-version = "v5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98 -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -31,10 +31,10 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 remove-rv-integrations-checks = false
 
 [Black-rvx]
-patches-version = "v5.0.3"
 app-name = "og-black"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
+patches-version = "v5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -46,10 +46,10 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 remove-rv-integrations-checks = false
 
 [Dark-rvx]
-patches-version = "v5.0.3"
 app-name = "og-dark"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
+patches-version = "v5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
@@ -61,10 +61,10 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 remove-rv-integrations-checks = false
 
 [Grey-rvx]
-patches-version = "v5.0.3"
 app-name = "grey"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
+patches-version = "v5.0.3"
 rv-brand = "rvx"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121 -e 'Change version code' -OchangeVersionCode=true"
 riplib = false
