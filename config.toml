@@ -1,6 +1,7 @@
 parallel-jobs = 1
 
 [MaterialYou-rvx]
+patches-version = "v5.0.3"
 app-name = "og-material-you"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
@@ -15,6 +16,7 @@ excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding 
 remove-rv-integrations-checks = false
 
 [Darker-MaterialYou-rvx]
+patches-version = "v5.0.3"
 app-name = "da-rker-matterialyou"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
@@ -29,6 +31,7 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 remove-rv-integrations-checks = false
 
 [Black-rvx]
+patches-version = "v5.0.3"
 app-name = "og-black"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
@@ -43,6 +46,7 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 remove-rv-integrations-checks = false
 
 [Dark-rvx]
+patches-version = "v5.0.3"
 app-name = "og-dark"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
@@ -57,6 +61,7 @@ excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for
 remove-rv-integrations-checks = false
 
 [Grey-rvx]
+patches-version = "v5.0.3"
 app-name = "grey"
 patches-source = "inotia00/revanced-patches"
 cli-source = "inotia00/revanced-cli"
