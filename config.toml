@@ -128,3 +128,32 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
+
+[BlackA6-7]
+remove-rv-integrations-checks = false
+app-name = "bllack"
+patches-source = "kitadai31/revanced-patches-android6-7"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx-a6-7"
+version = "17.34.36"
+riplib = false
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = ""
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+
+[DarkA6-7]
+remove-rv-integrations-checks = false
+app-name = "darrk"
+patches-source = "kitadai31/revanced-patches-android6-7"
+cli-source = "inotia00/revanced-cli"
+rv-brand = "rvx-a6-7"
+version = "17.34.36"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = ""
+excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
