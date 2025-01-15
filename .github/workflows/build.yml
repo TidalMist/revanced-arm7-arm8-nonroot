@@ -46,7 +46,7 @@ jobs:
         run: |
           DELIM="$(openssl rand -hex 3)"
 
-          if ! grep -qPoz 'Skipped[\s\S]*inotia00' build.md && grep -qom1 '"rvx"' ./config.toml; then
+          if find build | grep -q .*rvx.apk; then
           echo "RVX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=x: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/inotia00/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
@@ -55,7 +55,7 @@ jobs:
           echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
-          if ! grep -qPoz 'Skipped[\s\S]*ReVanced' build.md && grep -qom1 '"rv"' ./config.toml; then
+          if find build | grep -q .*rv.apk; then
           echo "RV_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=v: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
@@ -64,7 +64,7 @@ jobs:
           echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
-          if ! grep -qPoz 'Skipped[\s\S]*kitadai31' build.md && grep -qom1 '"rvx-a6-7"' ./config.toml; then
+          if find build | grep -q .*rvx-a6-7.apk; then
           echo "RVX_A6_7_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=7: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v'$(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
