@@ -130,6 +130,7 @@ included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
 
 [BlackA6-7]
+patches-version = "dev"
 remove-rv-integrations-checks = false
 app-name = "bllack"
 patches-source = "kitadai31/revanced-patches-android6-7"
@@ -145,6 +146,7 @@ included-patches = ""
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [DarkA6-7]
+patches-version = "dev"
 remove-rv-integrations-checks = false
 app-name = "darrk"
 patches-source = "kitadai31/revanced-patches-android6-7"
