@@ -7,9 +7,9 @@ Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) to detach root ReVanc
 [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)
   
 CLI: inotia00/revanced-cli-5.0.1-all.jar  
-Patches: kitadai31/patches-5.4.1-dev.4.rvp  
-[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v5.4.1-dev.4)  
+Patches: kitadai31/patches-5.4.1-dev.4.1.rvp  
+[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v5.4.1-dev.4.1)  
 
 Skipped:  
 Patches: ReVanced/patches-5.11.0.rvp  
-Patches: inotia00/patches-5.3.1.rvp      
+Patches: inotia00/patches-5.3.1.rvp        
