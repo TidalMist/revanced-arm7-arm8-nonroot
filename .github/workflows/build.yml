@@ -130,7 +130,6 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v6
         with:
           branch: update
-          skip_checkout: true
           file_pattern: build.md
    
       - name: Delete older releases rv
