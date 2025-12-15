@@ -22,12 +22,15 @@ toml_get_table_names() { jq -r -e 'to_entries[] | select(.value | type == "objec
 toml_get_table_main() { jq -r -e 'to_entries | map(select(.value | type != "object")) | from_entries' <<<"$__TOML__"; }
 toml_get_table() { jq -r -e ".\"${1}\"" <<<"$__TOML__"; }
 toml_get() {
-	local op
+	local op quote_placeholder=$'\001'
 	op=$(jq -r ".\"${2}\" | values" <<<"$1")
 	if [ "$op" ]; then
 		op="${op#"${op%%[![:space:]]*}"}"
 		op="${op%"${op##*[![:space:]]}"}"
+		op=${op//\\\'/$quote_placeholder}
+		op=${op//"''"/$quote_placeholder}
 		op=${op//"'"/'"'}
+		op=${op//$quote_placeholder/$'\''}
 		echo "$op"
 	else return 1; fi
 }
@@ -360,7 +363,7 @@ get_apkmirror_vers() {
 }
 get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
 get_apkmirror_resp() {
-	__APKMIRROR_RESP__=$(req "${1}" -)
+	__APKMIRROR_RESP__=$(req "${1}" -) || return 1
 	__APKMIRROR_CAT__="${1##*/}"
 }
 
@@ -457,11 +460,13 @@ patch_apk() {
 	fi
 }
 
+
 check_sig() {
 	local file=$1 pkg_name=$2
 	local sig
 	if grep -q "$pkg_name" sig.txt; then
 		sig=$(java -jar "$APKSIGNER" verify --print-certs "$file" | grep ^Signer | grep SHA-256 | tail -1 | awk '{print $NF}')
+		echo "$pkg_name signature: ${sig}"
 		grep -qFx "$sig $pkg_name" sig.txt
 	fi
 }
@@ -551,7 +556,8 @@ build_rv() {
 		if [ ! -f "$stock_apk" ]; then return 0; fi
 	fi
 	if ! OP=$(check_sig "$stock_apk" "$pkg_name" 2>&1) && ! grep -qFx "ERROR: Missing META-INF/MANIFEST.MF" <<<"$OP"; then
-		abort "apk signature mismatch '$stock_apk': $OP"
+		epr "$pkg_name not building, apk signature mismatch '$stock_apk': $OP"
+		return 0
 	fi
 	log "${table}: ${version}"
 
