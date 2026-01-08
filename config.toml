@@ -129,7 +129,73 @@ uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 included-patches = "'Change version code'"
 excluded-patches = "'Change header' 'Custom branding'"
 
+[MaterialYou-morphe]
+app-name = "materiiaalyou"
+patches-source = "MorpheApp/morphe-patches"
+cli-source = "MorpheApp/morphe-cli"
+build-mode = "apk"
+rv-brand = "morphe"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/system_neutral1_900 -OlightThemeBackgroundColor=@android:color/system_neutral1_50"
+riplib = false
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Darker-MaterialYou-morphe]
+app-name = "d-arker-materiiiaalyou"
+patches-source = "MorpheApp/morphe-patches"
+cli-source = "MorpheApp/morphe-cli"
+build-mode = "apk"
+rv-brand = "morphe"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98"
+riplib = false
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Black-morphe]
+app-name = "blacck"
+patches-source = "MorpheApp/morphe-patches"
+cli-source = "MorpheApp/morphe-cli"
+build-mode = "apk"
+rv-brand = "morphe"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
+riplib = false
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Dark-morphe]
+app-name = "daarrk"
+patches-source = "MorpheApp/morphe-patches"
+cli-source = "MorpheApp/morphe-cli"
+build-mode = "apk"
+rv-brand = "morphe"
+riplib = false
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
+[Grey-morphe]
+app-name = "greey"
+patches-source = "MorpheApp/morphe-patches"
+cli-source = "MorpheApp/morphe-cli"
+build-mode = "apk"
+rv-brand = "morphe"
+riplib = false
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube/"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+included-patches = "'Change version code'"
+excluded-patches = "'Change header' 'Custom branding'"
+
 [BlackA6-7]
+enabled = false
 patches-version = "dev"
 remove-rv-integrations-checks = false
 app-name = "bllack"
@@ -146,6 +212,7 @@ included-patches = ""
 excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
 
 [DarkA6-7]
+enabled = false
 patches-version = "dev"
 remove-rv-integrations-checks = false
 app-name = "darrk"
