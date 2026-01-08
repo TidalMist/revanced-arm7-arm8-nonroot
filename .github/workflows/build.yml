@@ -52,7 +52,7 @@ jobs:
           echo '[Changelog](https://github.com/inotia00/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: inotia00 $(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
-          echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
+          echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if find build | grep -q .*rv.apk; then
@@ -61,20 +61,30 @@ jobs:
           echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: ReVanced $(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
-          echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
+          echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
+          if find build | grep -q .*morphe.apk; then
+          echo "MORPHE_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
+          grep -Pom1 '(?<=e: ).*' build.md >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v'$(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: Morphe $(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
+          echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
+          echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
+
           if find build | grep -q .*rvx-a6-7.apk; then
-          echo "RVX_A6_7_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
+          echo "RVX_A6_7_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=7: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v'$(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
           echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: kitadai31 $(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
-          echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
+          echo "${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
           echo "RVX_TAG=$(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md)-rvx" >> "$GITHUB_OUTPUT"
           echo "RV_TAG=$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)-rv" >> "$GITHUB_OUTPUT"
+          echo "MORPHE_TAG=$(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md)-morphe" >> "$GITHUB_OUTPUT"
           echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
           
           echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
@@ -104,6 +114,19 @@ jobs:
           file: ./build/*rv.apk
           release_name: ReVanced
           tag: ${{ steps.get_output.outputs.RV_TAG }}
+          file_glob: true
+          overwrite: true
+          make_latest: false
+
+      - name: Upload morphe to release
+        if: ${{ steps.get_output.outputs.MORPHE_LOG != '' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          body: ${{ steps.get_output.outputs.MORPHE_LOG }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./build/*morphe.apk
+          release_name: Morphe
+          tag: ${{ steps.get_output.outputs.MORPHE_TAG }}
           file_glob: true
           overwrite: true
           make_latest: false
@@ -141,7 +164,17 @@ jobs:
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
+      - name: Delete older releases morphe
+        if: ${{ steps.get_output.outputs.MORPHE_LOG != '' }}
+        uses: dev-drprasad/delete-older-releases@v0.3.4
+        with:
+          keep_latest: 2
+          delete_tag_pattern: "morphe"
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Delete older releases rvx-a6-7
         if: ${{ steps.get_output.outputs.RVX_A6_7_LOG != '' }}
         uses: dev-drprasad/delete-older-releases@v0.3.4
