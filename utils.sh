@@ -486,6 +486,9 @@ get_direct_resp() { __DIRECT_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
 # --------------------------------------------------
 
 patch_apk() {
+        local rvx_anddea=""
+        if [ "$rv_brand_f" = rvx-anddea ]; then
+		local rvx_anddea="-OpackageNameYouTube=app.rvx.android.youtube"; fi
         local build_tools="${ANDROID_HOME}/build-tools/$(ls -vr ${ANDROID_HOME}/build-tools | grep -wm1 .)"
         local apksign="${build_tools}/apksigner sign --cert ks.jhc.x509.pem --key ks.jhc.pk8" align="${build_tools}/zipalign -pf 4"
         local arm8apk="/${app_name_l}-arm64-v8a-${rv_brand_f}.apk"
@@ -494,7 +497,7 @@ patch_apk() {
         local x86apk="/${app_name_l}-x86-${rv_brand_f}.apk"
         local cpt="cp $TEMP_DIR$arm8apk $TEMP_DIR" zipd="zip -dq $TEMP_DIR" algn="$align $TEMP_DIR" sign="$apksign $BUILD_DIR"
         local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5
-        local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' -p '$patches_jar' $patcher_args \
+        local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' -p '$patches_jar' $patcher_args $rvx_anddea \
 && ${build_tools}/aapt2 optimize --target-densities xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
 && $cpt$arm7apk && $cpt$x86_64apk && $cpt$x86apk \
 && $zipd$arm8apk lib/arme\* lib/x\* && $zipd$arm7apk lib/arm6\* lib/x\* && $zipd$x86_64apk lib/a\* lib/x86/\* && $zipd$x86apk lib/a\* lib/x86_\* \
