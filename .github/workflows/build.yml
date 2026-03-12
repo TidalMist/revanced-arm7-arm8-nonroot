@@ -129,7 +129,7 @@ jobs:
           tag: ${{ steps.get_output.outputs.MORPHE_TAG }}
           file_glob: true
           overwrite: true
-          make_latest: false
+          make_latest: true
 
       - name: Upload rvx to release
         if: ${{ steps.get_output.outputs.RVX_LOG != '' }}
@@ -142,7 +142,7 @@ jobs:
           tag: ${{ steps.get_output.outputs.RVX_TAG }}
           file_glob: true
           overwrite: true
-          make_latest: true
+          make_latest: false
 
       - name: Update changelog
         id: update_config
