@@ -155,7 +155,7 @@ riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
-included-patches = "'Change version code'"
+included-patches = "'Disable Play Store updates'"
 excluded-patches = "'Change header' 'Custom branding'"
 
 [Darker-MaterialYou-morphe]
@@ -169,7 +169,7 @@ riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
-included-patches = "'Change version code'"
+included-patches = "'Disable Play Store updates'"
 excluded-patches = "'Change header' 'Custom branding'"
 
 [Black-morphe]
@@ -183,7 +183,7 @@ riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
-included-patches = "'Change version code'"
+included-patches = "'Disable Play Store updates'"
 excluded-patches = "'Change header' 'Custom branding'"
 
 [Dark-morphe]
@@ -197,7 +197,7 @@ riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
-included-patches = "'Change version code'"
+included-patches = "'Disable Play Store updates'"
 excluded-patches = "'Change header' 'Custom branding'"
 
 [Grey-morphe]
@@ -211,7 +211,7 @@ riplib = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 uptodown-dlurl = "https://youtube.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
-included-patches = "'Change version code'"
+included-patches = "'Disable Play Store updates'"
 excluded-patches = "'Change header' 'Custom branding'"
 
 [BlackA6-7]
