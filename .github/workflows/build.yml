@@ -46,12 +46,12 @@ jobs:
         run: |
           DELIM="$(openssl rand -hex 3)"
 
-          if find build | grep -q .*rvx.apk; then
+          if find build | grep -q .*rvx-anddea.apk; then
           echo "RVX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
-          grep -Pom1 '(?<=x: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/inotia00/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: inotia00 $(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
+          grep -Pom1 '(?<=a: ).*' build.md >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: anddea $(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
@@ -82,7 +82,7 @@ jobs:
           echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
-          echo "RVX_TAG=$(grep -Pom1 '(?<=0\/patches-).*(?=\.rvp)' build.md)-rvx" >> "$GITHUB_OUTPUT"
+          echo "RVX_TAG=$(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md)-rvx-anddea" >> "$GITHUB_OUTPUT"
           echo "RV_TAG=$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)-rv" >> "$GITHUB_OUTPUT"
           echo "MORPHE_TAG=$(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md)-morphe" >> "$GITHUB_OUTPUT"
           echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
@@ -137,8 +137,8 @@ jobs:
         with:
           body: ${{ steps.get_output.outputs.RVX_LOG }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*rvx.apk
-          release_name: ReVanced Extended
+          file: ./build/*rvx-anddea.apk
+          release_name: ReVanced Extended anddea
           tag: ${{ steps.get_output.outputs.RVX_TAG }}
           file_glob: true
           overwrite: true
@@ -160,7 +160,7 @@ jobs:
         with:
           script: |
             const { data: releases } = await github.rest.repos.listReleases({ ...context.repo });
-            const config = [{ p: /rv$/, k: 2 }, { p: /morphe$/, k: 2 }, { p: /rvx$/, k: 2 }];
+            const config = [{ p: /rv$/, k: 2 }, { p: /morphe$/, k: 2 }, { p: /rvx-anddea$/, k: 2 }];
 
             for (const {p, k} of config) {
               const target = releases.filter(r => p.test(r.tag_name)).slice(k);
