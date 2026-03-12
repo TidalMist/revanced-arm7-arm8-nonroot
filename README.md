@@ -33,7 +33,7 @@
 ![IMG_20240603_093752](https://github.com/TidalMist/revanced-arm7-arm8-nonroot/assets/91356643/24fe360b-a32b-4ba6-9a3c-500bbfbdb004)
 
 **These import links work on devices with [Obtainium](https://github.com/ImranR98/Obtainium) installed**<div align="center"><h2>
-<sub>ReVanced Extended</sub><br>
+<sub>ReVanced Extended anddea</sub><br>
 [<ins>`Black`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22black%5C%22%7D%22%7D)  [<ins>`Dark`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22dark%5C%22%7D%22%7D)  [<ins>`Grey`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22grey%5C%22%7D%22%7D)
 
 [<ins>`DarkerMatYou`](https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://app/%7B%22id%22%3A%22app.rvx.android.youtube%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTidalMist%2Frevanced-arm7-arm8-nonroot%22%2C%22author%22%3A%22TidalMist%22%2C%22name%22%3A%22YouTube%22%2C%22additionalSettings%22%3A%22%7B%5C%22versionDetection%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22da-rker-matterial%5C%22%7D%22%7D)
@@ -67,6 +67,8 @@ for Morphe `materiiaalyou` or `d-arker-materiiiaalyou` or `blacck` or `daarrk` o
 ___
 
 <details><summary>Discontinued</summary>
+
+<h2><sub>ReVanced Extended inotia00</sub></h2>
 
 <h2>
 
