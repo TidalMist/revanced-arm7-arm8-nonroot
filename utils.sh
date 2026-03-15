@@ -271,14 +271,36 @@ get_patch_last_supported_ver() {
 			return
 		fi
 	fi
-	op=$(java -jar "$cli_jar" list-versions "$patches_jar" -f "$pkg_name" 2>&1 | tail -n +3 | awk '{$1=$1}1')
+	op=$(patches_list_versions "$cli_jar" "$patches_jar" "$pkg_name") || return 1
+	op=$(tail -n +3 <<<"$op" | awk '{$1=$1}1')
 	if [ "$op" = "Any" ]; then return; fi
 	pcount=$(head -1 <<<"$op") pcount=${pcount#*(} pcount=${pcount% *}
 	if [ -z "$pcount" ]; then
-		av_apps=$(java -jar "$cli_jar" list-versions "$patches_jar" 2>&1 | awk '/Package name:/ { printf "%s\x27%s\x27", sep, $NF; sep=", " } END { print "" }')
-		abort "No patch versions found for '$pkg_name' in this patches source!\nAvailable applications found: $av_apps"
+		abort "No patches found for '$pkg_name' in patches '$patches_jar'"
 	fi
 	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | get_highest_ver || return 1
+}
+
+patches_list_versions() {
+	local cli_jar=$1 patches_jar=$2 pkg_name=$3 op
+	if ! op=$(java -jar "$cli_jar" list-versions -p "$patches_jar" -f "$pkg_name" -b 2>&1); then
+		if ! op=$(java -jar "$cli_jar" list-versions "$patches_jar" -f "$pkg_name" 2>&1); then
+			epr "Could not list versions $cli_jar: '$op'"
+			return 1
+		fi
+	fi
+	echo "$op"
+}
+patches_list() {
+	local cli_jar=$1 patches_jar=$2 pkg_name=$3 op
+	if ! op=$(java -jar "$cli_jar" list-patches -p "$patches_jar" --filter-package-name "$pkg_name" --versions --packages -b 2>&1); then
+		if ! op=$(java -jar "$cli_jar" list-patches --patches "$patches_jar" -f "$pkg_name" --with-versions --with-packages 2>&1); then
+			epr "Could not get patches list $cli_jar: '$op'"
+			return 1
+		fi
+
+	fi
+	echo "$op"
 }
 
 isoneof() {
@@ -490,6 +512,13 @@ get_direct_resp() { __DIRECT_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
 # --------------------------------------------------
 
 patch_apk() {
+        # TODO: remove this later
+	    local cli_name
+		local rv_cli_v6=""
+	    cli_name=$(basename "$cli_jar")
+	    if [ "${cli_name::8}" = revanced ]; then
+		local rv_cli_v6=" -b"; fi
+		
         local rvx_anddea=""
         if [ "$rv_brand_f" = rvx-anddea ]; then
 		local rvx_anddea="-OpackageNameYouTube=app.rvx.android.youtube"; fi
@@ -501,7 +530,7 @@ patch_apk() {
         local x86apk="/${app_name_l}-x86-${rv_brand_f}.apk"
         local cpt="cp $TEMP_DIR$arm8apk $TEMP_DIR" zipd="zip -dq $TEMP_DIR" algn="$align $TEMP_DIR" sign="$apksign $BUILD_DIR"
         local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5
-        local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' -p '$patches_jar' $patcher_args $rvx_anddea \
+        local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' -p '$patches_jar' $patcher_args $rvx_anddea $rv_cli_v6 \
 && ${build_tools}/aapt2 optimize --target-densities xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
 && $cpt$arm7apk && $cpt$x86_64apk && $cpt$x86apk \
 && $zipd$arm8apk lib/arme\* lib/x\* && $zipd$arm7apk lib/arm6\* lib/x\* && $zipd$x86_64apk lib/a\* lib/x86/\* && $zipd$x86apk lib/a\* lib/x86_\* \
@@ -558,13 +587,7 @@ build_rv() {
 		return 0
 	fi
 	local list_patches
-	if ! list_patches=$(java -jar "$cli_jar" list-patches "$patches_jar" -f "$pkg_name" -v -p 2>&1); then
-		if ! list_patches=$(java -jar "$cli_jar" list-patches --patches "$patches_jar" -f "$pkg_name" -v -p 2>&1); then
-			epr "Could not get patches list from $cli_jar"
-			return 1
-		fi
-	fi
-
+	list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name") || return 1
 	local get_latest_ver=false
 	if [ "$version_mode" = auto ]; then
 		if ! version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
