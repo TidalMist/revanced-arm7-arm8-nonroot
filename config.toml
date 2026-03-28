@@ -3,6 +3,80 @@ parallel-jobs = 1
 [MaterialYou-rvx-anddea]
 app-name = "og-material-you"
 patches-source = "anddea/revanced-patches"
+cli-source = "MorpheApp/morphe-cli"
+rv-brand = "rvx-anddea"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
+included-patches = "'MaterialYou' 'Change version code'"
+excluded-patches = "'Theme' 'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+remove-rv-integrations-checks = false
+
+[Darker-MaterialYou-rvx-anddea]
+app-name = "da-rker-matterialyou"
+patches-source = "anddea/revanced-patches"
+cli-source = "MorpheApp/morphe-cli"
+rv-brand = "rvx-anddea"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
+included-patches = "'MaterialYou' 'Change version code'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+remove-rv-integrations-checks = false
+
+[Black-rvx-anddea]
+app-name = "og-black"
+patches-source = "anddea/revanced-patches"
+cli-source = "MorpheApp/morphe-cli"
+rv-brand = "rvx-anddea"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
+included-patches = "'Change version code'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+remove-rv-integrations-checks = false
+
+[Dark-rvx-anddea]
+app-name = "og-dark"
+patches-source = "anddea/revanced-patches"
+cli-source = "MorpheApp/morphe-cli"
+rv-brand = "rvx-anddea"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
+included-patches = "'Change version code'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+remove-rv-integrations-checks = false
+
+[Grey-rvx-anddea]
+app-name = "grey"
+patches-source = "anddea/revanced-patches"
+cli-source = "MorpheApp/morphe-cli"
+rv-brand = "rvx-anddea"
+patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121"
+riplib = false
+build-mode = "apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
+uptodown-dlurl = "https://youtube.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.youtube"
+included-patches = "'Change version code'"
+excluded-patches = "'Custom branding icon for YouTube' 'Custom branding name for YouTube' 'Custom header for YouTube'"
+remove-rv-integrations-checks = false
+
+[MaterialYou-rvx-anddea]
+app-name = "og-material-you"
+patches-source = "anddea/revanced-patches"
 patches-version = "dev"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
@@ -35,7 +109,6 @@ remove-rv-integrations-checks = false
 app-name = "og-black"
 patches-source = "anddea/revanced-patches"
 patches-version = "dev"
-patches-version = "latest"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
