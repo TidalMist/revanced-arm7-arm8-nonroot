@@ -35,6 +35,7 @@ remove-rv-integrations-checks = false
 app-name = "og-black"
 patches-source = "anddea/revanced-patches"
 patches-version = "dev"
+patches-version = "latest"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
