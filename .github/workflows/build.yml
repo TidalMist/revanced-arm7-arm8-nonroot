@@ -156,7 +156,7 @@ jobs:
           file_pattern: build.md
 
       - name: Delete older releases ai
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: releases } = await github.rest.repos.listReleases({ ...context.repo });
