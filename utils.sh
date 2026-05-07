@@ -755,9 +755,9 @@ build_rv() {
 		fi
 		rm "$stock_apk_to_patch"
 		if [ "$build_mode" = apk ]; then
-			if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
+			#if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
 				#mv -f "$patched_apk" "$apk_output"
-			fi
+			#fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			continue
 		fi
