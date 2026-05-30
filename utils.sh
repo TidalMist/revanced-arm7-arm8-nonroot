@@ -560,7 +560,10 @@ patch_apk() {
         local x86apk="/${app_name_l}-x86-${rv_brand_f}.apk"
         local cpt="cp $TEMP_DIR$arm8apk $TEMP_DIR" zipd="zip -dq $TEMP_DIR" algn="$align $TEMP_DIR" sign="$apksign $BUILD_DIR"
         local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5
-        local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' -p '$patches_jar' -t '$patched_apk-tmp' $patcher_args $rvx_anddea $rv_cli_v6 \
+		local tmp_files
+	    tmp_files="$(pwd)/$(mktemp -d -p "$TEMP_DIR")"
+
+        local cmd="java -jar '$cli_jar' patch '$stock_input' --purge -o '$patched_apk' -p '$patches_jar' -t '$tmp_files' $patcher_args $rvx_anddea $rv_cli_v6 \
 && ${build_tools}/aapt2 optimize --target-densities xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
 && $cpt$arm7apk && $cpt$x86_64apk && $cpt$x86apk \
 && $zipd$arm8apk lib/arme\* lib/x\* && $zipd$arm7apk lib/arm6\* lib/x\* && $zipd$x86_64apk lib/a\* lib/x86/\* && $zipd$x86apk lib/a\* lib/x86_\* \
