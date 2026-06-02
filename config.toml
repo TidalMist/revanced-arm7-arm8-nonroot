@@ -3,7 +3,7 @@ parallel-jobs = 1
 [MaterialYou-rvx-anddea]
 app-name = "og-material-you"
 patches-source = "anddea/revanced-patches"
-#patches-version = "dev"
+patches-version = "dev"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 riplib = false
@@ -18,7 +18,7 @@ remove-rv-integrations-checks = false
 [Darker-MaterialYou-rvx-anddea]
 app-name = "da-rker-matterialyou"
 patches-source = "anddea/revanced-patches"
-#patches-version = "dev"
+patches-version = "dev"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant6 -OlightThemeBackgroundColor=@color/m3_ref_palette_dynamic_neutral_variant98"
@@ -34,7 +34,7 @@ remove-rv-integrations-checks = false
 [Black-rvx-anddea]
 app-name = "og-black"
 patches-source = "anddea/revanced-patches"
-#patches-version = "dev"
+patches-version = "dev"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=@android:color/black"
@@ -50,7 +50,7 @@ remove-rv-integrations-checks = false
 [Dark-rvx-anddea]
 app-name = "og-dark"
 patches-source = "anddea/revanced-patches"
-#patches-version = "dev"
+patches-version = "dev"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF0F0F0F"
@@ -66,7 +66,7 @@ remove-rv-integrations-checks = false
 [Grey-rvx-anddea]
 app-name = "grey"
 patches-source = "anddea/revanced-patches"
-#patches-version = "dev"
+patches-version = "dev"
 cli-source = "MorpheApp/morphe-cli"
 rv-brand = "rvx-anddea"
 patcher-args = "-e 'Theme' -OdarkThemeBackgroundColor=#FF212121"
