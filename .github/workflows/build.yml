@@ -50,7 +50,7 @@ jobs:
           echo "RVX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=a: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-desktop-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: anddea $(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
@@ -68,7 +68,7 @@ jobs:
           echo "MORPHE_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=e: ).*' build.md >> "$GITHUB_OUTPUT"
           echo '[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v'$(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
+          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-desktop-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
           echo Patches: Morphe $(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
