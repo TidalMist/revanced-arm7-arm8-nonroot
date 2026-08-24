@@ -34,7 +34,7 @@
 
 **These import links work on devices with [Obtainium](https://github.com/ImranR98/Obtainium) installed**
 
-Since v1.40.0 Morphe you can set **`custom theme color in settings`** but temporary or permanently only **`in Black version`**<details>Because if options of Theme patch is set then custom color in settings is unavailable and i removed patch options for black version because black is already default in theme patch. And I don't know if it's necessary to make only two versions, without patch options and DarkerMaterialYou. Then everyone's theme color will be reset and they will need to find out about this new setting and set their color. Maybe RVX will too be same as morphe but now all rvx versions with dark color and custom color settings.</details>
+Since v1.40.0 Morphe you can set **`custom theme color in settings`** but temporary or permanently only **`in Black version`**<details>Because if options of Theme patch is set then custom color in settings is unavailable and i removed patch options for black version because black is already default in theme patch. And I don't know if it's necessary to make only two versions, without patch options and DarkerMaterialYou. Then everyone's theme color will be reset and they will need to find out about this new setting and set their color. Maybe RVX will be the same as morphe but now all rvx versions have dark color and custom color settings.</details>
 <div align="center"><h2>
 
 <sub>ReVanced Extended anddea</sub><br>
