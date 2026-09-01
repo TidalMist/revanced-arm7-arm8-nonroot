@@ -1,18 +1,18 @@
-Black-rvx-anddea: 20.51.39  
-Dark-rvx-anddea: 20.51.39  
-Darker-MaterialYou-rvx-anddea: 20.51.39  
-Grey-rvx-anddea: 20.51.39  
-MaterialYou-rvx-anddea: 20.51.39  
+Black-morphe: 21.07.247  
+Dark-morphe: 21.07.247  
+Darker-MaterialYou-morphe: 21.07.247  
+Grey-morphe: 21.07.247  
+MaterialYou-morphe: 21.07.247  
 
 Install [Microg](https://github.com/MorpheApp/MicroG-RE/) for non-root YouTube and YT Music APKs  
 Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) to detach YouTube and YT Music modules from Play Store  
 
 [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)
   
-Patches: anddea/patches-4.3.0-dev.4.mpp  
-[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v4.3.0-dev.4)
+Patches: MorpheApp/patches-1.41.0.mpp  
+[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.41.0)
 
 CLI: MorpheApp/morphe-desktop-1.14.0-all.jar    
 
 Skipped:  
-Patches: MorpheApp/patches-1.40.0.mpp    
+Patches: anddea/patches-4.3.0-dev.4.mpp    
