@@ -23,6 +23,8 @@
 [ImranR98](https://github.com/ImranR98?tab=repositories&q=&type=&language=&sort=stargazers)
 
 [Hamster45105](https://github.com/Hamster45105?tab=repositories&q=&type=&language=&sort=stargazers) made it possible to open obtainium app config import link from readme
+
+[MANCrimSon](https://github.com/MANCrimSon?tab=repositories&q=&type=&language=&sort=stargazers) archive-dlurl
 </h2></details>
 
 ## Get updates
