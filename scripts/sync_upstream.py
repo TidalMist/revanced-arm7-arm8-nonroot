@@ -324,6 +324,31 @@ def sync_bin_snapshot(files: dict[str, tuple[bytes, str]]) -> list[str]:
     return changed
 
 
+def sync_upstream_scripts(outputs: dict[Path, str], root: Path = ROOT) -> list[str]:
+    """Write synced scripts and preserve upstream executable modes.
+
+    Both upstream entry points are executable in Git (100755). Path.write_text()
+    preserves the existing local mode, so explicitly restore +x after syncing.
+    """
+    changed: list[str] = []
+    executable_scripts = {"utils.sh", "build.sh"}
+
+    for path, content in outputs.items():
+        relative = path.relative_to(root).as_posix()
+        if not path.exists() or path.read_text(encoding="utf-8") != content:
+            path.write_text(content, encoding="utf-8", newline="\n")
+            changed.append(relative)
+
+        desired_mode = 0o755 if path.name in executable_scripts else 0o644
+        current_mode = stat.S_IMODE(path.stat().st_mode)
+        if current_mode != desired_mode:
+            os.chmod(path, desired_mode)
+            if relative not in changed:
+                changed.append(f"{relative} (mode updated)")
+
+    return changed
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -363,11 +388,7 @@ def main() -> int:
     build = transform_build(upstream_build)
 
     outputs = {ROOT / "utils.sh": utils, ROOT / "build.sh": build}
-    changed: list[str] = []
-    for path, content in outputs.items():
-        if not path.exists() or path.read_text(encoding="utf-8") != content:
-            path.write_text(content, encoding="utf-8", newline="\\n")
-            changed.append(str(path.relative_to(ROOT)))
+    changed = sync_upstream_scripts(outputs)
 
     changed.extend(sync_bin_snapshot(upstream_bin))
 

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+import stat
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +16,7 @@ from sync_upstream import (
     validate_fork_wrapper,
     validate_upstream_patcher_order,
     read_upstream_bin,
+    sync_upstream_scripts,
 )
 
 
@@ -65,6 +67,31 @@ class SyncUpstreamTests(unittest.TestCase):
             snapshot = read_upstream_bin(upstream, "local-test", None)
 
             self.assertEqual(snapshot["bin/toml/tq-x86_64"], (b"test parser", "100755"))
+
+    def test_upstream_scripts_are_executable_after_sync(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            utils = root / "utils.sh"
+            build = root / "build.sh"
+            utils.write_text("old utils", encoding="utf-8")
+            build.write_text("old build", encoding="utf-8")
+            os.chmod(utils, 0o644)
+            os.chmod(build, 0o755)
+
+            changed = sync_upstream_scripts(
+                {utils: "new utils", build: "new build"},
+                root=root,
+            )
+
+            self.assertEqual(stat.S_IMODE(utils.stat().st_mode), 0o755)
+            self.assertEqual(stat.S_IMODE(build.stat().st_mode), 0o755)
+            self.assertEqual(utils.read_text(encoding="utf-8"), "new utils")
+            self.assertIn("utils.sh", changed)
+
+            self.assertEqual(
+                sync_upstream_scripts({utils: "new utils", build: "new build"}, root=root),
+                [],
+            )
 
     def test_fork_wrapper_rejects_missing_x86_split(self) -> None:
         wrapper = (ROOT / "fork/patch_apk.sh").read_text(encoding="utf-8")

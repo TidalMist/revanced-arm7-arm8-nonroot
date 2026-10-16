@@ -4,7 +4,7 @@ The `.github/workflows/ci.yml` workflow runs daily at 22:17 Moscow time (19:17 U
 
 Each run:
 1. Resolves one current commit of `j-hc/revanced-magisk-module`.
-2. Synchronizes `utils.sh`, `build.sh`, and the complete `bin/` tool directory. Binary sizes and Git blob hashes are checked, and executable modes are preserved.
+2. Synchronizes `utils.sh`, `build.sh`, and the complete `bin/` tool directory. The sync explicitly keeps `utils.sh` and `build.sh` executable (`100755`); binary sizes and Git blob hashes are checked, and executable modes for `bin/` are preserved.
 3. Runs regression tests for the fork integration, Bash syntax checks, and whitespace validation.
 4. Commits changed upstream builder files to `main`, if necessary.
 5. Checks whether newer patch releases are available for the profiles in the existing `config.toml`, comparing them with `update/build.md`.
