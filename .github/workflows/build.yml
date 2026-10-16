@@ -132,6 +132,10 @@ jobs:
               complete = (
                   expected_count > 0
                   and all(item["complete"] for item in items)
+                  and all(
+                      all(profile["complete"] for profile in by_source[item["source"]])
+                      for item in items
+                  )
                   and actual_count == expected_count
               )
               brand_status[brand] = {
