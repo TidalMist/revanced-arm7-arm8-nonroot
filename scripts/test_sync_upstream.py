@@ -16,6 +16,9 @@ from sync_upstream import (
     validate_fork_wrapper,
     validate_upstream_patcher_order,
     read_upstream_bin,
+    read_upstream_snapshot,
+    sync_upstream_snapshot,
+    validate_upstream_sig,
     sync_upstream_scripts,
 )
 
@@ -55,6 +58,101 @@ class SyncUpstreamTests(unittest.TestCase):
     def test_fork_wrapper_keeps_package_option_before_upstream_call(self) -> None:
         wrapper = (ROOT / "fork/patch_apk.sh").read_text(encoding="utf-8")
         validate_fork_wrapper(wrapper)
+
+
+    def test_upstream_sig_requires_youtube_entry(self) -> None:
+        valid = (
+            "a" * 64 + " com.google.android.youtube\n"
+            + "b" * 64 + " com.google.android.apps.youtube.music\n"
+        ).encode()
+        validate_upstream_sig(valid)
+
+        with self.assertRaisesRegex(RuntimeError, "YouTube signature entry"):
+            validate_upstream_sig(("b" * 64 + " com.google.android.apps.youtube.music\n").encode())
+
+        duplicate = valid + ("c" * 64 + " com.google.android.youtube\n").encode()
+        with self.assertRaisesRegex(RuntimeError, "found 2"):
+            validate_upstream_sig(duplicate)
+
+    def test_full_snapshot_reads_module_and_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            upstream = Path(temp) / "upstream"
+            (upstream / "bin/toml").mkdir(parents=True)
+            (upstream / "module/META-INF/com/google/android").mkdir(parents=True)
+            (upstream / "bin/toml/tq-x86_64").write_bytes(b"parser")
+            (upstream / "module/META-INF/com/google/android/update-binary").write_text(
+                "#!/bin/sh\n", encoding="utf-8"
+            )
+            (upstream / "CONFIG.md").write_text("config docs\n", encoding="utf-8")
+            (upstream / "sig.txt").write_text(
+                "a" * 64 + " com.google.android.youtube\n", encoding="utf-8"
+            )
+            os.chmod(upstream / "module/META-INF/com/google/android/update-binary", 0o755)
+
+            snapshot = read_upstream_snapshot(
+                upstream,
+                "local-test",
+                None,
+                prefixes=("bin/", "module/"),
+                exact_paths=("CONFIG.md", "sig.txt"),
+            )
+
+            self.assertEqual(snapshot["bin/toml/tq-x86_64"], (b"parser", "100644"))
+            self.assertEqual(
+                snapshot["module/META-INF/com/google/android/update-binary"][1],
+                "100755",
+            )
+            self.assertIn("CONFIG.md", snapshot)
+            self.assertIn("sig.txt", snapshot)
+
+    def test_snapshot_mirrors_managed_paths_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "target"
+            upstream = Path(temp) / "upstream"
+            (root / "bin/old").mkdir(parents=True)
+            (root / "module/old").mkdir(parents=True)
+            (root / ".github/workflows").mkdir(parents=True)
+            (root / "bin/old/obsolete").write_text("old", encoding="utf-8")
+            (root / "module/old/obsolete").write_text("old", encoding="utf-8")
+            (root / "CONFIG.md").write_text("old docs", encoding="utf-8")
+            (root / "sig.txt").write_text("old sig", encoding="utf-8")
+            (root / "README.md").write_text("fork readme", encoding="utf-8")
+            (root / "config.toml").write_text("fork config", encoding="utf-8")
+            (root / ".github/workflows/ci.yml").write_text("fork workflow", encoding="utf-8")
+
+            (upstream / "bin/toml").mkdir(parents=True)
+            (upstream / "module/META-INF").mkdir(parents=True)
+            (upstream / "bin/toml/tq-x86_64").write_bytes(b"new parser")
+            (upstream / "module/META-INF/update-binary").write_text("new module", encoding="utf-8")
+            (upstream / "CONFIG.md").write_text("new docs", encoding="utf-8")
+            (upstream / "sig.txt").write_text(
+                "a" * 64 + " com.google.android.youtube\n", encoding="utf-8"
+            )
+
+            snapshot = read_upstream_snapshot(
+                upstream,
+                "local-test",
+                None,
+                prefixes=("bin/", "module/"),
+                exact_paths=("CONFIG.md", "sig.txt"),
+            )
+            changed = sync_upstream_snapshot(
+                snapshot,
+                root=root,
+                prefixes=("bin/", "module/"),
+                exact_paths=("CONFIG.md", "sig.txt"),
+            )
+
+            self.assertFalse((root / "bin/old/obsolete").exists())
+            self.assertFalse((root / "module/old/obsolete").exists())
+            self.assertEqual((root / "bin/toml/tq-x86_64").read_bytes(), b"new parser")
+            self.assertEqual((root / "module/META-INF/update-binary").read_text(), "new module")
+            self.assertEqual((root / "CONFIG.md").read_text(), "new docs")
+            self.assertIn(" com.google.android.youtube", (root / "sig.txt").read_text())
+            self.assertEqual((root / "README.md").read_text(), "fork readme")
+            self.assertEqual((root / "config.toml").read_text(), "fork config")
+            self.assertEqual((root / ".github/workflows/ci.yml").read_text(), "fork workflow")
+            self.assertTrue(any("obsolete (removed)" in item for item in changed))
 
     def test_local_bin_snapshot_preserves_executable_mode(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
