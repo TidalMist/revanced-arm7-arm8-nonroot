@@ -31,6 +31,17 @@ jobs:
           ref: ${{ inputs.ref || github.sha }}
           submodules: true
 
+      - name: Save previous changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git show origin/update:build.md > build.previous.md; then
+            echo "Saved origin/update:build.md for per-source recovery."
+          else
+            rm -f build.previous.md
+            echo "No previous update/build.md exists; failed sources will keep no new patch marker."
+          fi
+
       - name: Update config
         if: ${{ inputs.from_ci }}
         run: |
@@ -55,6 +66,137 @@ jobs:
         run: |
           set -euo pipefail
 
+          python3 - <<'PY'
+          from collections import defaultdict
+          from pathlib import Path
+          import json
+          import re
+          import tomllib
+
+          previous_path = Path("build.previous.md")
+          previous = previous_path.read_text(encoding="utf-8") if previous_path.is_file() else ""
+          current_path = Path("build.md")
+          current = current_path.read_text(encoding="utf-8")
+
+          config_json = Path("config.json")
+          if config_json.is_file():
+              config = json.loads(config_json.read_text(encoding="utf-8"))
+          else:
+              config = tomllib.loads(Path("config.toml").read_text(encoding="utf-8"))
+
+          default_source = config.get("patches-source", "ReVanced/revanced-patches")
+          default_brand = config.get("rv-brand", "ReVanced")
+          abis = ("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
+          build_dir = Path("build")
+
+          profiles = []
+          for table_name, options in config.items():
+              if not isinstance(options, dict):
+                  continue
+              enabled = options.get("enabled", True)
+              if enabled is False or str(enabled).lower() == "false":
+                  continue
+
+              app_name = str(options.get("app-name", table_name)).lower().replace(" ", "-")
+              brand = str(options.get("rv-brand", default_brand)).lower().replace(" ", "-")
+              source = str(options.get("patches-source", default_source))
+              arch = str(options.get("arch", "all"))
+
+              expected = [f"{app_name}-{abi}-{brand}.apk" for abi in abis] if arch == "all" else []
+              complete = bool(expected) and all((build_dir / name).is_file() for name in expected)
+              profiles.append({
+                  "table": table_name,
+                  "source": source,
+                  "brand": brand,
+                  "expected": expected,
+                  "complete": complete,
+              })
+              missing = [name for name in expected if not (build_dir / name).is_file()]
+              if arch != "all":
+                  print(f"{table_name}: arch={arch} uses non-split output; treated as incomplete for this release workflow.")
+              elif missing:
+                  print(f"{table_name}: missing {len(missing)} expected APK(s): {', '.join(missing)}")
+              else:
+                  print(f"{table_name}: all four ABI APKs are present.")
+
+          by_brand = defaultdict(list)
+          by_source = defaultdict(list)
+          for profile in profiles:
+              by_brand[profile["brand"]].append(profile)
+              by_source[profile["source"]].append(profile)
+
+          brand_status = {}
+          for brand, items in by_brand.items():
+              expected_count = sum(len(item["expected"]) for item in items)
+              actual_count = len(list(build_dir.glob(f"*{brand}.apk")))
+              complete = (
+                  expected_count > 0
+                  and all(item["complete"] for item in items)
+                  and actual_count == expected_count
+              )
+              brand_status[brand] = {
+                  "complete": complete,
+                  "expected": expected_count,
+                  "actual": actual_count,
+              }
+              print(f"Release group {brand}: {actual_count}/{expected_count} APK(s); complete={complete}.")
+
+          Path("build-status.json").write_text(
+              json.dumps({"brands": brand_status}, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          def record_pattern(source):
+              return re.compile(
+                  rf"(?m)^Patches: {re.escape(source)}/[^\r\n]*"
+                  rf"(?:\r?\n\[Changelog\]\([^\r\n]*\))?"
+              )
+
+          def get_record(text, source):
+              match = record_pattern(source).search(text)
+              return match.group(0).strip() if match else ""
+
+          def sources_in(text):
+              return re.findall(r"(?m)^Patches: ([^/\r\n]+/[^/\r\n]+)/", text)
+
+          source_order = []
+          for source in (
+              [profile["source"] for profile in profiles]
+              + sources_in(current)
+              + sources_in(previous)
+          ):
+              if source not in source_order:
+                  source_order.append(source)
+
+          chosen_records = []
+          for source in source_order:
+              new_record = get_record(current, source)
+              old_record = get_record(previous, source)
+              items = by_source.get(source, [])
+
+              if not items:
+                  # This source wasn't part of this run; don't lose its old marker.
+                  chosen = old_record or new_record
+                  print(f"{source}: not part of this build; preserving its previous marker.")
+              elif all(item["complete"] for item in items):
+                  chosen = new_record or old_record
+                  print(f"{source}: every configured profile is complete; keeping the current marker.")
+              else:
+                  chosen = old_record
+                  print(f"{source}: at least one configured profile is incomplete; restoring the previous marker.")
+
+              if chosen:
+                  chosen_records.append(chosen)
+
+          for source in source_order:
+              current = record_pattern(source).sub("", current)
+
+          current = re.sub(r"\n[ \t]*\n(?:[ \t]*\n)+", "\n\n", current).rstrip()
+          if chosen_records:
+              current += "\n\n" + "\n\n".join(chosen_records)
+          current_path.write_text(current.rstrip() + "\n", encoding="utf-8")
+          PY
+
           output() {
             local key="$1" value="$2" delimiter
             delimiter="$(openssl rand -hex 16)"
@@ -65,6 +207,11 @@ jobs:
             local key="$1" files="$2" version_re="$3" patch_re="$4" cli_re="$5"
             local repo="$6" cli_name="$7" patch_name="$8" microg="$9" suffix="${10}"
             compgen -G "$files" >/dev/null || return 0
+
+            if ! jq -e --arg brand "$suffix" '.brands[$brand].complete == true' build-status.json >/dev/null; then
+              echo "Incomplete APK set for $key ($suffix); skipping partial release."
+              return 0
+            fi
 
             local version patch cli body
             version="$(grep -Pom1 "$version_re" build.md || true)"
