@@ -86,6 +86,13 @@ patch_apk() {
             return 1
         fi
     done
+    # Build Tools must support 16 KiB ZIP alignment for native libraries.
+    local zipalign_help
+    zipalign_help="$("$zipalign" -h 2>&1 || true)"
+    if ! grep -Eq '(^|[[:space:]])-P([[:space:]]|$)' <<<"$zipalign_help"; then
+        epr "zipalign from Android Build Tools '$build_tools_version' does not support '-P 16'; install Build Tools 35.0.0-rc3 or newer."
+        return 1
+    fi
     if [[ ! -f "$key_cert" || ! -f "$key_pk8" ]]; then
         epr "The fork signing key files ks.jhc.x509.pem / ks.jhc.pk8 are missing."
         return 1
@@ -133,11 +140,17 @@ patch_apk() {
     local i
     for i in "${!names[@]}"; do
         name="${names[$i]}"
+        # Keep zipalign output concise; the explicit check below still fails on misalignment.
         temp_file="$TEMP_DIR/${name%.apk}.aligned.apk"
         output_file="$BUILD_DIR/$name"
 
-        if ! "$zipalign" -pf 4 "${sources[$i]}" "$temp_file"; then
+        if ! "$zipalign" -P 16 -f 4 "${sources[$i]}" "$temp_file"; then
             epr "zipalign failed for '$name'."
+            rm -f "$temp_file"
+            return 1
+        fi
+        if ! "$zipalign" -c -P 16 4 "$temp_file"; then
+            epr "APK alignment verification failed for '$name'."
             rm -f "$temp_file"
             return 1
         fi
