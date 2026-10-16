@@ -58,7 +58,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add utils.sh build.sh bin/
+          git add -- utils.sh build.sh bin/ module/ CONFIG.md sig.txt
 
           if git diff --cached --quiet; then
             echo "No upstream source changes to commit."
