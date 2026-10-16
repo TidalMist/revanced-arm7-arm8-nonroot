@@ -6,6 +6,11 @@ on:
         type: boolean
         required: false
         default: true
+      ref:
+        description: "Commit to build after upstream synchronization."
+        type: string
+        required: false
+        default: ""
 
   workflow_dispatch:
 
@@ -23,7 +28,19 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          ref: ${{ inputs.ref || github.sha }}
           submodules: true
+
+      - name: Save previous changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git show origin/update:build.md > build.previous.md; then
+            echo "Saved origin/update:build.md for per-source recovery."
+          else
+            rm -f build.previous.md
+            echo "No previous update/build.md exists; failed sources will keep no new patch marker."
+          fi
 
       - name: Update config
         if: ${{ inputs.from_ci }}
@@ -39,110 +56,252 @@ jobs:
         run: if [ -f "config.json" ]; then ./build.sh config.json; else ./build.sh config.toml; fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Remove universal intermediate APKs
+        run: find build -maxdepth 1 -type f -name '*-all.apk' -delete
 
       - name: Get output
         id: get_output
+        shell: bash
         run: |
-          DELIM="$(openssl rand -hex 3)"
+          set -euo pipefail
 
-          if find build | grep -q .*rvx-anddea.apk; then
-          echo "RVX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
-          grep -Pom1 '(?<=a: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli\/morphe-desktop-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: anddea $(grep -Pom1 '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
-          echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
-          echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
+          python3 - <<'PY'
+          from collections import defaultdict
+          from pathlib import Path
+          import json
+          import re
+          import tomllib
 
-          if find build | grep -q .*rv.apk; then
-          echo "RV_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
-          grep -Pom1 '(?<=v: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli\/revanced-cli-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: ReVanced $(grep -Pom1 '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
-          echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
-          echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
+          previous_path = Path("build.previous.md")
+          previous = previous_path.read_text(encoding="utf-8") if previous_path.is_file() else ""
+          current_path = Path("build.md")
+          current = current_path.read_text(encoding="utf-8")
 
-          if find build | grep -q .*morphe.apk; then
-          echo "MORPHE_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
-          grep -Pom1 '(?<=e: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v'$(grep -Pom1 '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli\/morphe-desktop-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: Morphe $(grep -Pom1 '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
-          echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
-          echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
+          config_json = Path("config.json")
+          if config_json.is_file():
+              config = json.loads(config_json.read_text(encoding="utf-8"))
+          else:
+              config = tomllib.loads(Path("config.toml").read_text(encoding="utf-8"))
 
-          if find build | grep -q .*rvx-a6-7.apk; then
-          echo "RVX_A6_7_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
-          grep -Pom1 '(?<=7: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v'$(grep -Pom1 '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli\/revanced-cli-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: kitadai31 $(grep -Pom1 '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
-          echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
-          echo "${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
-          
-          echo "RVX_TAG=$(grep -Pom1 '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' build.md)-rvx-anddea" >> "$GITHUB_OUTPUT"
-          echo "RV_TAG=$(grep -Pom1 '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' build.md)-rv" >> "$GITHUB_OUTPUT"
-          echo "MORPHE_TAG=$(grep -Pom1 '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' build.md)-morphe" >> "$GITHUB_OUTPUT"
-          echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
-          
-          echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
-          cat build.md >> "$GITHUB_OUTPUT"
-          echo "${DELIM}" >> "$GITHUB_OUTPUT"
+          default_source = config.get("patches-source", "ReVanced/revanced-patches")
+          default_brand = config.get("rv-brand", "ReVanced")
+          abis = ("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
+          build_dir = Path("build")
+
+          profiles = []
+          for table_name, options in config.items():
+              if not isinstance(options, dict):
+                  continue
+              enabled = options.get("enabled", True)
+              if enabled is False or str(enabled).lower() == "false":
+                  continue
+
+              app_name = str(options.get("app-name", table_name)).lower().replace(" ", "-")
+              brand = str(options.get("rv-brand", default_brand)).lower().replace(" ", "-")
+              source = str(options.get("patches-source", default_source))
+              arch = str(options.get("arch", "all"))
+
+              expected = [f"{app_name}-{abi}-{brand}.apk" for abi in abis] if arch == "all" else []
+              complete = bool(expected) and all((build_dir / name).is_file() for name in expected)
+              profiles.append({
+                  "table": table_name,
+                  "source": source,
+                  "brand": brand,
+                  "expected": expected,
+                  "complete": complete,
+              })
+              missing = [name for name in expected if not (build_dir / name).is_file()]
+              if arch != "all":
+                  print(f"{table_name}: arch={arch} uses non-split output; treated as incomplete for this release workflow.")
+              elif missing:
+                  print(f"{table_name}: missing {len(missing)} expected APK(s): {', '.join(missing)}")
+              else:
+                  print(f"{table_name}: all four ABI APKs are present.")
+
+          by_brand = defaultdict(list)
+          by_source = defaultdict(list)
+          for profile in profiles:
+              by_brand[profile["brand"]].append(profile)
+              by_source[profile["source"]].append(profile)
+
+          brand_status = {}
+          for brand, items in by_brand.items():
+              expected_count = sum(len(item["expected"]) for item in items)
+              actual_count = len(list(build_dir.glob(f"*{brand}.apk")))
+              complete = (
+                  expected_count > 0
+                  and all(item["complete"] for item in items)
+                  and all(
+                      all(profile["complete"] for profile in by_source[item["source"]])
+                      for item in items
+                  )
+                  and actual_count == expected_count
+              )
+              brand_status[brand] = {
+                  "complete": complete,
+                  "expected": expected_count,
+                  "actual": actual_count,
+              }
+              print(f"Release group {brand}: {actual_count}/{expected_count} APK(s); complete={complete}.")
+
+          Path("build-status.json").write_text(
+              json.dumps({"brands": brand_status}, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          def record_pattern(source):
+              return re.compile(
+                  rf"(?m)^Patches: {re.escape(source)}/[^\r\n]*"
+                  rf"(?:\r?\n\[Changelog\]\([^\r\n]*\))?"
+              )
+
+          def get_record(text, source):
+              match = record_pattern(source).search(text)
+              return match.group(0).strip() if match else ""
+
+          def sources_in(text):
+              return re.findall(r"(?m)^Patches: ([^/\r\n]+/[^/\r\n]+)/", text)
+
+          source_order = []
+          for source in (
+              [profile["source"] for profile in profiles]
+              + sources_in(current)
+              + sources_in(previous)
+          ):
+              if source not in source_order:
+                  source_order.append(source)
+
+          chosen_records = []
+          for source in source_order:
+              new_record = get_record(current, source)
+              old_record = get_record(previous, source)
+              items = by_source.get(source, [])
+
+              if not items:
+                  # This source wasn't part of this run; don't lose its old marker.
+                  chosen = old_record or new_record
+                  print(f"{source}: not part of this build; preserving its previous marker.")
+              elif all(item["complete"] for item in items):
+                  chosen = new_record or old_record
+                  print(f"{source}: every configured profile is complete; keeping the current marker.")
+              else:
+                  chosen = old_record
+                  print(f"{source}: at least one configured profile is incomplete; restoring the previous marker.")
+
+              if chosen:
+                  chosen_records.append(chosen)
+
+          for source in source_order:
+              current = record_pattern(source).sub("", current)
+
+          current = re.sub(r"\n[ \t]*\n(?:[ \t]*\n)+", "\n\n", current).rstrip()
+          if chosen_records:
+              current += "\n\n" + "\n\n".join(chosen_records)
+          current_path.write_text(current.rstrip() + "\n", encoding="utf-8")
+          PY
+
+          output() {
+            local key="$1" value="$2" delimiter
+            delimiter="$(openssl rand -hex 16)"
+            printf '%s<<%s\n%s\n%s\n' "$key" "$delimiter" "$value" "$delimiter" >> "$GITHUB_OUTPUT"
+          }
+
+          release() {
+            local key="$1" files="$2" version_re="$3" patch_re="$4" cli_re="$5"
+            local repo="$6" cli_name="$7" patch_name="$8" microg="$9" suffix="${10}"
+            compgen -G "$files" >/dev/null || return 0
+
+            if ! jq -e --arg brand "$suffix" '.brands[$brand].complete == true' build-status.json >/dev/null; then
+              echo "Incomplete APK set for $key ($suffix); skipping partial release."
+              return 0
+            fi
+
+            local version patch cli body
+            version="$(grep -Pom1 "$version_re" build.md || true)"
+            patch="$(grep -Pom1 "$patch_re" build.md || true)"
+            cli="$(grep -Pom1 "$cli_re" build.md || true)"
+            [[ -n "$version" && -n "$patch" && -n "$cli" ]] || {
+              echo "Missing release metadata for $key" >&2
+              return 1
+            }
+            printf -v body '%s\n%s\nCLI: %s %s\nPatches: %s %s\nInstall [Microg](%s) for non-root YouTube' \
+              "$version" "[Changelog](https://github.com/$repo/releases/tag/v$patch)" \
+              "$cli_name" "$cli" "$patch_name" "$patch" "$microg"
+            output "${key}_LOG" "$body"
+            printf '%s_TAG=%s-%s\n' "$key" "$patch" "$suffix" >> "$GITHUB_OUTPUT"
+          }
+
+          release RVX './build/*rvx-anddea.apk' '(?<=a: ).*' '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' '(?<=p\/morphe-cli\/morphe-desktop-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' \
+            anddea/revanced-patches Morphe anddea https://github.com/MorpheApp/MicroG-RE/releases rvx-anddea
+          release RV './build/*rv.apk' '(?<=v: ).*' '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' '(?<=d\/revanced-cli\/revanced-cli-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' \
+            ReVanced/revanced-patches ReVanced ReVanced https://github.com/MorpheApp/MicroG-RE/releases rv
+          release MORPHE './build/*morphe.apk' '(?<=e: ).*' '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' '(?<=p\/morphe-cli\/morphe-desktop-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' \
+            MorpheApp/morphe-patches Morphe Morphe https://github.com/MorpheApp/MicroG-RE/releases morphe
+          release RVX_A6_7 './build/*rvx-a6-7.apk' '(?<=7: ).*' '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' '(?<=0\/revanced-cli\/revanced-cli-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' \
+            kitadai31/revanced-patches-android6-7 inotia00 kitadai31 https://github.com/ReVanced/GmsCore/releases rvx-a6-7
+
           cp -f build.md build.tmp
 
-      - name: Upload rvx-a6-7 to release
-        if: ${{ steps.get_output.outputs.RVX_A6_7_LOG != '' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          body: ${{ steps.get_output.outputs.RVX_A6_7_LOG }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*rvx-a6-7.apk
-          release_name: ReVanced Extended Android6-7
-          tag: ${{ steps.get_output.outputs.RVX_A6_7_TAG }}
-          file_glob: true
-          overwrite: true
-          make_latest: false
+      - name: Upload releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RVX_A6_7_TAG: ${{ steps.get_output.outputs.RVX_A6_7_TAG }}
+          RVX_A6_7_LOG: ${{ steps.get_output.outputs.RVX_A6_7_LOG }}
+          RV_TAG: ${{ steps.get_output.outputs.RV_TAG }}
+          RV_LOG: ${{ steps.get_output.outputs.RV_LOG }}
+          MORPHE_TAG: ${{ steps.get_output.outputs.MORPHE_TAG }}
+          MORPHE_LOG: ${{ steps.get_output.outputs.MORPHE_LOG }}
+          RVX_TAG: ${{ steps.get_output.outputs.RVX_TAG }}
+          RVX_LOG: ${{ steps.get_output.outputs.RVX_LOG }}
+        run: |
+          shopt -s nullglob
 
-      - name: Upload rv to release
-        if: ${{ steps.get_output.outputs.RV_LOG != '' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          body: ${{ steps.get_output.outputs.RV_LOG }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*rv.apk
-          release_name: ReVanced
-          tag: ${{ steps.get_output.outputs.RV_TAG }}
-          file_glob: true
-          overwrite: true
-          make_latest: false
+          upload_release() {
+            local tag="$1"
+            local title="$2"
+            local body="$3"
+            local latest="$4"
+            shift 4
+            local files=("$@")
 
-      - name: Upload morphe to release
-        if: ${{ steps.get_output.outputs.MORPHE_LOG != '' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          body: ${{ steps.get_output.outputs.MORPHE_LOG }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*morphe.apk
-          release_name: Morphe
-          tag: ${{ steps.get_output.outputs.MORPHE_TAG }}
-          file_glob: true
-          overwrite: true
-          make_latest: true
+            if [[ -z "$tag" ]]; then
+              echo "Missing release tag for: $title" >&2
+              return 1
+            fi
+            if (( ${#files[@]} == 0 )); then
+              echo "No build files found for: $title ($tag)" >&2
+              return 1
+            fi
 
-      - name: Upload rvx to release
-        if: ${{ steps.get_output.outputs.RVX_LOG != '' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          body: ${{ steps.get_output.outputs.RVX_LOG }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/*rvx-anddea.apk
-          release_name: ReVanced Extended anddea
-          tag: ${{ steps.get_output.outputs.RVX_TAG }}
-          file_glob: true
-          overwrite: true
-          make_latest: false
+            echo "Publishing $title ($tag)"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release edit "$tag" --title "$title" --notes "$body"
+              gh release upload "$tag" "${files[@]}" --clobber
+              local release_id
+              release_id="$(gh release view "$tag" --json databaseId --jq '.databaseId')"
+              gh api "repos/$GITHUB_REPOSITORY/releases/$release_id" --method PATCH -f "make_latest=$latest" >/dev/null
+            else
+              gh release create "$tag" "${files[@]}" --title "$title" --notes "$body" "--latest=$latest"
+            fi
+          }
+
+          if [[ -n "$RVX_A6_7_LOG" ]]; then
+            files=(./build/*rvx-a6-7.apk)
+            upload_release "$RVX_A6_7_TAG" "ReVanced Extended Android6-7" "$RVX_A6_7_LOG" false "${files[@]}"
+          fi
+          if [[ -n "$RV_LOG" ]]; then
+            files=(./build/*rv.apk)
+            upload_release "$RV_TAG" "ReVanced" "$RV_LOG" false "${files[@]}"
+          fi
+          if [[ -n "$MORPHE_LOG" ]]; then
+            files=(./build/*morphe.apk)
+            upload_release "$MORPHE_TAG" "Morphe" "$MORPHE_LOG" true "${files[@]}"
+          fi
+          if [[ -n "$RVX_LOG" ]]; then
+            files=(./build/*rvx-anddea.apk)
+            upload_release "$RVX_TAG" "ReVanced Extended anddea" "$RVX_LOG" false "${files[@]}"
+          fi
 
       - name: Update changelog
         id: update_config
@@ -150,22 +309,77 @@ jobs:
           git checkout -f update || git switch --discard-changes --orphan update
           cp -f build.tmp build.md
 
-      - uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          branch: update
-          file_pattern: build.md
+      - name: Commit changelog to update branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -- build.md
 
-      - name: Delete older releases ai
+          if git diff --cached --quiet; then
+            echo "build.md did not change; no changelog commit is needed."
+          else
+            git commit -m "Update build log"
+            git push origin HEAD:update
+          fi
+
+      - name: Keep latest two releases per variant
         uses: actions/github-script@v9
         with:
           script: |
-            const { data: releases } = await github.rest.repos.listReleases({ ...context.repo });
-            const config = [{ p: /rv$/, k: 2 }, { p: /morphe$/, k: 2 }, { p: /rvx-anddea$/, k: 2 }];
+            const releases = await github.paginate(
+              github.rest.repos.listReleases,
+              { ...context.repo, per_page: 100 }
+            );
 
-            for (const {p, k} of config) {
-              const target = releases.filter(r => p.test(r.tag_name)).slice(k);
-              for (const r of target) {
-                await github.rest.repos.deleteRelease({ ...context.repo, release_id: r.id }).catch(() => {});
-                await github.rest.git.deleteRef({ ...context.repo, ref: `tags/${r.tag_name}` }).catch(() => {});
+            const config = [
+              { suffix: '-rv', keep: 2 },
+              { suffix: '-morphe', keep: 2 },
+              { suffix: '-rvx-anddea', keep: 2 },
+              { suffix: '-rvx-a6-7', keep: 2 },
+            ];
+
+            async function deleteOrWarnIfMissing(label, request) {
+              try {
+                await request();
+              } catch (error) {
+                if (error.status === 404) {
+                  core.warning(`${label} was already absent (404); continuing.`);
+                  return;
+                }
+                throw error;
               }
             }
+
+            core.info(`Found ${releases.length} releases across all pages.`);
+
+            for (const { suffix, keep } of config) {
+              const family = releases
+                .filter((release) => release.tag_name.endsWith(suffix))
+                .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+
+              const targets = family.slice(keep);
+              core.info(
+                `${suffix}: keeping ${Math.min(family.length, keep)}, deleting ${targets.length}.`
+              );
+
+              for (const release of targets) {
+                core.info(`Deleting old release ${release.tag_name} (${release.created_at}).`);
+                await deleteOrWarnIfMissing(
+                  `Release ${release.tag_name}`,
+                  () => github.rest.repos.deleteRelease({
+                    ...context.repo,
+                    release_id: release.id,
+                  })
+                );
+                await deleteOrWarnIfMissing(
+                  `Tag ${release.tag_name}`,
+                  () => github.rest.git.deleteRef({
+                    ...context.repo,
+                    ref: `tags/${release.tag_name}`,
+                  })
+                );
+              }
+            }
+

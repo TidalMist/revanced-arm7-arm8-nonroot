@@ -582,33 +582,21 @@ get_direct_resp() { __DIRECT_APKNAME__=$(awk -F/ '{print $NF}' <<<"$1"); }
 # --------------------------------------------------
 
 patch_apk() {
-        # TODO: remove this later
-	    local cli_name
-		local rv_cli_v6=""
-	    cli_name=$(basename "$cli_jar")
-	    if [ "${cli_name::8}" = revanced ]; then
-		local rv_cli_v6=" -b"; fi
-		
-        local rvx_anddea=""
-        if [ "$rv_brand_f" = rvx-anddea ]; then
-		local rvx_anddea="-OpackageNameYouTube=app.rvx.android.youtube"; fi
-        local build_tools="${ANDROID_HOME}/build-tools/$(ls -vr ${ANDROID_HOME}/build-tools | grep -wm1 .)"
-        local apksign="${build_tools}/apksigner sign --cert ks.jhc.x509.pem --key ks.jhc.pk8" align="${build_tools}/zipalign -pf 4"
-        local arm8apk="/${app_name_l}-arm64-v8a-${rv_brand_f}.apk"
-        local arm7apk="/${app_name_l}-armeabi-v7a-${rv_brand_f}.apk"
-        local x86_64apk="/${app_name_l}-x86_64-${rv_brand_f}.apk"
-        local x86apk="/${app_name_l}-x86-${rv_brand_f}.apk"
-        local cpt="cp $TEMP_DIR$arm8apk $TEMP_DIR" zipd="zip -dq $TEMP_DIR" algn="$align $TEMP_DIR" sign="$apksign $BUILD_DIR"
-        local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5
-		local tmp_files
-	    tmp_files="$(pwd)/$(mktemp -d -p "$TEMP_DIR")"
+	local stock_input=$1 patched_apk=$2 patcher_args=$3 cli_jar=$4 patches_jar=$5
+	local tmp_files
+	tmp_files="$(pwd)/$(mktemp -d -p "$TEMP_DIR")"
 
-        local cmd="java -jar '$cli_jar' patch '$stock_input' -o '$patched_apk' -p '$patches_jar' -t '$tmp_files' $patcher_args $rvx_anddea $rv_cli_v6 \
-&& ${build_tools}/aapt2 optimize --target-densities xxhdpi $patched_apk -o $TEMP_DIR$arm8apk \
-&& $cpt$arm7apk && $cpt$x86_64apk && $cpt$x86apk \
-&& $zipd$arm8apk lib/arme\* lib/x\* && $zipd$arm7apk lib/arm6\* lib/x\* && $zipd$x86_64apk lib/a\* lib/x86/\* && $zipd$x86apk lib/a\* lib/x86_\* \
-&& $algn$arm8apk $BUILD_DIR$arm8apk && $algn$arm7apk $BUILD_DIR$arm7apk && $algn$x86_64apk $BUILD_DIR$x86_64apk && $algn$x86apk $BUILD_DIR$x86apk \
-&& $sign$arm8apk && $sign$arm7apk && $sign$x86_64apk && $sign$x86apk"
+	local cmd="java -jar '$cli_jar' patch '$stock_input' -o '$patched_apk' -p '$patches_jar' --keystore=ks.keystore \
+--keystore-entry-password=123456789 --keystore-password=123456789 --signer=jhc --keystore-entry-alias=jhc -t '$tmp_files' $patcher_args"
+
+	# TODO: remove this later
+	local cli_name
+	cli_name=$(basename "$cli_jar")
+	if [ "${cli_name::8}" = "revanced" ]; then
+		cmd+=" -b"
+		if [ "$OS" = "Android" ]; then cmd+=" --custom-aapt2-binary='${AAPT2}'"; fi
+	fi
+
 	pr "$cmd"
 	if eval "$cmd"; then [ -f "$patched_apk" ]; else
 		rm "$patched_apk" 2>/dev/null || :
@@ -823,8 +811,8 @@ build_rv() {
 				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/x86_64/*" "lib/armeabi-v7a/*" >/dev/null 2>&1 || :
 			elif [ "$arch" = "x86_64" ]; then
 				zip -d "$stock_apk_to_patch" "lib/arm64-v8a/*" "lib/armeabi-v7a/*" "lib/x86/*" >/dev/null 2>&1 || :
-			#else
-				#zip -d "$stock_apk_to_patch" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
+			else
+				zip -d "$stock_apk_to_patch" "lib/x86_64/*" "lib/x86/*" >/dev/null 2>&1 || :
 			fi
 		fi
 
@@ -837,11 +825,11 @@ build_rv() {
 		fi
 		rm "$stock_apk_to_patch"
 		if [ "$build_mode" = apk ]; then
-			#if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
-				#mv -f "$patched_apk" "$apk_output"
-			#else
-				#cp -f "$patched_apk" "$apk_output"
-			#fi
+			if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
+				mv -f "$patched_apk" "$apk_output"
+			else
+				cp -f "$patched_apk" "$apk_output"
+			fi
 			pr "Built ${table} (non-root): '${apk_output}'"
 			continue
 		fi
