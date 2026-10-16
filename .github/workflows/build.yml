@@ -49,43 +49,43 @@ jobs:
           if find build | grep -q .*rvx-anddea.apk; then
           echo "RVX_LOG<<${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=a: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-desktop-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: anddea $(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/anddea/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli\/morphe-desktop-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: anddea $(grep -Pom1 '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if find build | grep -q .*rv.apk; then
           echo "RV_LOG<<${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=v: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: ReVanced $(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v'$(grep -Pom1 '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo CLI: ReVanced $(grep -Pom1 '(?<=d\/revanced-cli\/revanced-cli-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: ReVanced $(grep -Pom1 '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if find build | grep -q .*morphe.apk; then
           echo "MORPHE_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=e: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v'$(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-desktop-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: Morphe $(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/MorpheApp/morphe-patches/releases/tag/v'$(grep -Pom1 '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo CLI: Morphe $(grep -Pom1 '(?<=p\/morphe-cli\/morphe-desktop-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: Morphe $(grep -Pom1 '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/MorpheApp/MicroG-RE/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
 
           if find build | grep -q .*rvx-a6-7.apk; then
           echo "RVX_A6_7_LOG<<${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"
           grep -Pom1 '(?<=7: ).*' build.md >> "$GITHUB_OUTPUT"
-          echo '[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v'$(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
-          echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli-).*(?=-all\.jar)' build.md) >> "$GITHUB_OUTPUT"
-          echo Patches: kitadai31 $(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
+          echo '[Changelog](https://github.com/kitadai31/revanced-patches-android6-7/releases/tag/v'$(grep -Pom1 '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' build.md)')' >> "$GITHUB_OUTPUT"
+          echo CLI: inotia00 $(grep -Pom1 '(?<=0\/revanced-cli\/revanced-cli-).*((?=-all\.jar)|(?=(?<!-all)\.jar))' build.md) >> "$GITHUB_OUTPUT"
+          echo Patches: kitadai31 $(grep -Pom1 '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' build.md) >> "$GITHUB_OUTPUT"
           echo "Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube" >> "$GITHUB_OUTPUT"
           echo "${DELIM}${DELIM}${DELIM}${DELIM}${DELIM}" >> "$GITHUB_OUTPUT"; fi
           
-          echo "RVX_TAG=$(grep -Pom1 '(?<=a\/patches-).*(?=\.mpp)' build.md)-rvx-anddea" >> "$GITHUB_OUTPUT"
-          echo "RV_TAG=$(grep -Pom1 '(?<=d\/patches-).*(?=\.rvp)' build.md)-rv" >> "$GITHUB_OUTPUT"
-          echo "MORPHE_TAG=$(grep -Pom1 '(?<=p\/patches-).*(?=\.mpp)' build.md)-morphe" >> "$GITHUB_OUTPUT"
-          echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/patches-).*(?=\.rvp)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
+          echo "RVX_TAG=$(grep -Pom1 '(?<=a\/revanced-patches\/patches-).*(?=\.mpp)' build.md)-rvx-anddea" >> "$GITHUB_OUTPUT"
+          echo "RV_TAG=$(grep -Pom1 '(?<=d\/revanced-patches\/patches-).*(?=\.rvp)' build.md)-rv" >> "$GITHUB_OUTPUT"
+          echo "MORPHE_TAG=$(grep -Pom1 '(?<=p\/morphe-patches\/patches-).*(?=\.mpp)' build.md)-morphe" >> "$GITHUB_OUTPUT"
+          echo "RVX_A6_7_TAG=$(grep -Pom1 '(?<=1\/revanced-patches-android6-7\/patches-).*(?=\.rvp)' build.md)-rvx-a6-7" >> "$GITHUB_OUTPUT"
           
           echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
           cat build.md >> "$GITHUB_OUTPUT"
