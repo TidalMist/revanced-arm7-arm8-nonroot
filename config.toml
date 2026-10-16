@@ -1,3 +1,5 @@
+enable-update-checks = false
+enable-module-update = false
 parallel-jobs = 1
 
 [MaterialYou-rvx-anddea]
