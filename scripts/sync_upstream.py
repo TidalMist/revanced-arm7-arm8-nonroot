@@ -209,30 +209,72 @@ def _git_blob_sha(data: bytes) -> str:
     return hashlib.sha1(header + data).hexdigest()
 
 
-def read_upstream_bin(
-    source_dir: Path | None, revision: str, tree_sha: str | None
+def validate_upstream_sig(data: bytes, source: str = "upstream sig.txt") -> None:
+    """Require exactly one well-formed official YouTube signature entry."""
+    try:
+        content = data.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise RuntimeError(f"{source} is not valid UTF-8: {exc}") from exc
+
+    entries = [
+        line.strip()
+        for line in content.splitlines()
+        if re.search(r"\s+com\.google\.android\.youtube$", line.strip())
+    ]
+    if len(entries) != 1 or not re.fullmatch(
+        r"[0-9a-fA-F]{64}\s+com\.google\.android\.youtube", entries[0] if entries else ""
+    ):
+        raise RuntimeError(
+            f"Expected exactly one valid YouTube signature entry in {source}; "
+            f"found {len(entries)}. Refusing to sync."
+        )
+
+
+def read_upstream_snapshot(
+    source_dir: Path | None,
+    revision: str,
+    tree_sha: str | None,
+    *,
+    prefixes: tuple[str, ...],
+    exact_paths: tuple[str, ...] = (),
 ) -> dict[str, tuple[bytes, str]]:
-    """Fetch the complete upstream bin/ snapshot and validate bytes/modes."""
+    """Read and validate selected upstream paths, preserving Git file modes."""
+    files: dict[str, tuple[bytes, str]] = {}
+
     if source_dir is not None:
-        source_bin = source_dir / "bin"
-        if not source_bin.is_dir():
-            raise RuntimeError(
-                f"Local upstream source directory has no bin/: {source_bin}"
-            )
-        files: dict[str, tuple[bytes, str]] = {}
-        for path in sorted(source_bin.rglob("*")):
-            if path.is_symlink():
-                raise RuntimeError(f"Symlink in upstream bin/ is not supported: {path}")
-            if not path.is_file():
-                continue
-            relative = path.relative_to(source_dir).as_posix()
+        for prefix in prefixes:
+            base = source_dir / prefix.rstrip("/")
+            if base.is_symlink() or not base.is_dir():
+                raise RuntimeError(
+                    f"Local upstream source is missing required directory: {base}"
+                )
+            for path in sorted(base.rglob("*")):
+                if path.is_symlink():
+                    raise RuntimeError(f"Symlink in upstream snapshot is not supported: {path}")
+                if not path.is_file():
+                    continue
+                relative = path.relative_to(source_dir).as_posix()
+                if path.is_absolute() is False or relative.startswith("../"):
+                    raise RuntimeError(f"Unsafe upstream path: {relative}")
+                mode_bits = stat.S_IMODE(path.stat().st_mode)
+                mode = "100755" if mode_bits & 0o111 else "100644"
+                files[relative] = (path.read_bytes(), mode)
+
+        for relative in exact_paths:
+            path = source_dir / relative
+            if path.is_symlink() or not path.is_file():
+                raise RuntimeError(
+                    f"Local upstream source is missing required file: {path}"
+                )
             mode_bits = stat.S_IMODE(path.stat().st_mode)
             mode = "100755" if mode_bits & 0o111 else "100644"
             files[relative] = (path.read_bytes(), mode)
     else:
         if not tree_sha:
             raise RuntimeError("Upstream commit did not provide a Git tree SHA.")
-        tree_url = f"https://api.github.com/repos/{UPSTREAM}/git/trees/{tree_sha}?recursive=1"
+        tree_url = (
+            f"https://api.github.com/repos/{UPSTREAM}/git/trees/{tree_sha}?recursive=1"
+        )
         try:
             tree = json.loads(fetch(tree_url, accept="application/vnd.github+json"))
         except (urllib.error.URLError, json.JSONDecodeError) as exc:
@@ -240,33 +282,37 @@ def read_upstream_bin(
 
         if tree.get("truncated"):
             raise RuntimeError(
-                "Upstream Git tree response was truncated; refusing a partial bin/ sync."
+                "Upstream Git tree response was truncated; refusing a partial snapshot."
             )
 
-        entries = [
-            entry for entry in tree.get("tree", [])
-            if entry.get("type") == "blob" and entry.get("path", "").startswith("bin/")
-        ]
-        if not entries:
-            raise RuntimeError("Upstream Git tree contains no bin/ files.")
-
-        files = {}
-        for entry in entries:
-            relative = entry["path"]
+        selected_entries = []
+        for entry in tree.get("tree", []):
+            relative = entry.get("path", "")
+            selected = relative in exact_paths or any(
+                relative.startswith(prefix) for prefix in prefixes
+            )
+            if not selected:
+                continue
+            if entry.get("type") != "blob":
+                continue
             mode = entry.get("mode")
             if mode not in {"100644", "100755"}:
                 raise RuntimeError(
-                    f"Unsupported upstream Git mode {mode!r} for {relative}; refusing to sync."
+                    f"Unsupported upstream Git mode {mode!r} for {relative}; "
+                    "refusing to sync."
                 )
-            if relative.startswith("/") or ".." in Path(relative).parts:
+            if Path(relative).is_absolute() or ".." in Path(relative).parts:
                 raise RuntimeError(f"Unsafe path in upstream tree: {relative}")
+            selected_entries.append(entry)
 
+        for entry in selected_entries:
+            relative = entry["path"]
             url = f"{RAW_URL}/{revision}/{relative}"
             try:
                 data = fetch(url, accept="application/octet-stream")
             except urllib.error.URLError as exc:
                 raise RuntimeError(
-                    f"Could not download upstream binary asset {relative}: {exc}"
+                    f"Could not download upstream asset {relative}: {exc}"
                 ) from exc
 
             if len(data) != entry.get("size"):
@@ -278,34 +324,86 @@ def read_upstream_bin(
                 raise RuntimeError(
                     f"Git blob SHA mismatch for {relative}: expected {entry.get('sha')}, got {actual_sha}."
                 )
-            files[relative] = (data, mode)
+            files[relative] = (data, entry["mode"])
 
-    if "bin/toml/tq-x86_64" not in files:
+    for prefix in prefixes:
+        if not any(path.startswith(prefix) for path in files):
+            raise RuntimeError(f"Upstream snapshot has no files under {prefix}.")
+    for relative in exact_paths:
+        if relative not in files:
+            raise RuntimeError(f"Upstream snapshot is missing required file: {relative}.")
+
+    if "bin/" in prefixes and "bin/toml/tq-x86_64" not in files:
         raise RuntimeError("Upstream bin/ snapshot is missing bin/toml/tq-x86_64.")
+    if "module/" in prefixes and not any(
+        path.startswith("module/") for path in files
+    ):
+        raise RuntimeError("Upstream module/ snapshot is empty.")
+    if "sig.txt" in exact_paths:
+        validate_upstream_sig(files["sig.txt"][0])
+
     return files
 
 
-def sync_bin_snapshot(files: dict[str, tuple[bytes, str]]) -> list[str]:
-    """Make the working tree's bin/ match the validated upstream snapshot."""
-    bin_root = ROOT / "bin"
+def read_upstream_bin(
+    source_dir: Path | None, revision: str, tree_sha: str | None
+) -> dict[str, tuple[bytes, str]]:
+    """Read the complete upstream bin/ snapshot and validate bytes/modes."""
+    return read_upstream_snapshot(
+        source_dir, revision, tree_sha, prefixes=("bin/",)
+    )
+
+
+def sync_upstream_snapshot(
+    files: dict[str, tuple[bytes, str]],
+    root: Path = ROOT,
+    *,
+    prefixes: tuple[str, ...],
+    exact_paths: tuple[str, ...] = (),
+) -> list[str]:
+    """Mirror selected upstream directories and root files, including deletions."""
+    managed = set(exact_paths)
+    for prefix in prefixes:
+        managed.update(
+            relative for relative in files if relative.startswith(prefix)
+        )
+    for relative in files:
+        if relative not in exact_paths and not any(
+            relative.startswith(prefix) for prefix in prefixes
+        ):
+            raise RuntimeError(f"Refusing to sync unmanaged upstream path: {relative}")
+
     expected = set(files)
     changed: list[str] = []
 
-    if bin_root.exists():
-        for path in sorted(bin_root.rglob("*"), reverse=True):
-            if path.is_symlink():
-                raise RuntimeError(f"Refusing to update symlink inside bin/: {path}")
-            if path.is_file() and path.relative_to(ROOT).as_posix() not in expected:
-                path.unlink()
-                changed.append(f"{path.relative_to(ROOT).as_posix()} (removed)")
-            elif path.is_dir():
-                try:
-                    path.rmdir()
-                except OSError:
-                    pass
+    for prefix in prefixes:
+        base = root / prefix.rstrip("/")
+        if base.is_symlink():
+            raise RuntimeError(f"Refusing to update symlink inside synced tree: {base}")
+        if base.exists():
+            for path in sorted(base.rglob("*"), reverse=True):
+                if path.is_symlink():
+                    raise RuntimeError(f"Refusing to update symlink inside synced tree: {path}")
+                relative = path.relative_to(root).as_posix()
+                if path.is_file() and relative not in expected:
+                    path.unlink()
+                    changed.append(f"{relative} (removed)")
+                elif path.is_dir():
+                    try:
+                        path.rmdir()
+                    except OSError:
+                        pass
+
+    for relative in exact_paths:
+        destination = root / relative
+        if destination.is_symlink():
+            raise RuntimeError(f"Refusing to overwrite symlink: {relative}")
+        if destination.is_file() and relative not in expected:
+            destination.unlink()
+            changed.append(f"{relative} (removed)")
 
     for relative, (data, mode) in sorted(files.items()):
-        destination = ROOT / relative
+        destination = root / relative
         if destination.is_symlink():
             raise RuntimeError(f"Refusing to overwrite symlink: {relative}")
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -323,6 +421,10 @@ def sync_bin_snapshot(files: dict[str, tuple[bytes, str]]) -> list[str]:
 
     return changed
 
+
+def sync_bin_snapshot(files: dict[str, tuple[bytes, str]]) -> list[str]:
+    """Backward-compatible helper for tests that only mirror bin/."""
+    return sync_upstream_snapshot(files, prefixes=("bin/",))
 
 def sync_upstream_scripts(outputs: dict[Path, str], root: Path = ROOT) -> list[str]:
     """Write synced scripts and preserve upstream executable modes.
@@ -378,7 +480,13 @@ def main() -> int:
     # Fetch and validate everything before writing any working-tree file.
     upstream_utils = read_upstream_file("utils.sh", source_dir, revision)
     upstream_build = read_upstream_file("build.sh", source_dir, revision)
-    upstream_bin = read_upstream_bin(source_dir, revision, tree_sha)
+    upstream_snapshot = read_upstream_snapshot(
+        source_dir,
+        revision,
+        tree_sha,
+        prefixes=("bin/", "module/"),
+        exact_paths=("CONFIG.md", "sig.txt"),
+    )
     wrapper_path = ROOT / "fork/patch_apk.sh"
     if not wrapper_path.is_file():
         raise RuntimeError("fork/patch_apk.sh is missing; refusing to sync.")
@@ -390,12 +498,18 @@ def main() -> int:
     outputs = {ROOT / "utils.sh": utils, ROOT / "build.sh": build}
     changed = sync_upstream_scripts(outputs)
 
-    changed.extend(sync_bin_snapshot(upstream_bin))
+    changed.extend(
+        sync_upstream_snapshot(
+            upstream_snapshot,
+            prefixes=("bin/", "module/"),
+            exact_paths=("CONFIG.md", "sig.txt"),
+        )
+    )
 
     if changed:
         print("Updated: " + ", ".join(changed))
     else:
-        print("No upstream changes in utils.sh, build.sh, or bin.")
+        print("No upstream changes in utils.sh, build.sh, bin/, module/, CONFIG.md, or sig.txt.")
 
     print("GmsCore argument ordering and fork ABI/package-name guards passed.")
     return 0
