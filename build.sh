@@ -5,6 +5,28 @@ shopt -s nullglob
 
 source utils.sh
 
+# Preserve the upstream patcher before the fork-specific wrapper overrides it.
+if ! declare -F patch_apk >/dev/null; then
+    echo "ERROR: utils.sh did not define patch_apk()." >&2
+    exit 1
+fi
+if declare -F patch_apk_upstream >/dev/null; then
+    echo "ERROR: patch_apk_upstream already exists; refusing to override it." >&2
+    exit 1
+fi
+_upstream_patch_definition="$(declare -f patch_apk)"
+_upstream_patch_body="${_upstream_patch_definition#*$'\n'}"
+if [[ "$_upstream_patch_body" == "$_upstream_patch_definition" ]]; then
+    echo "ERROR: Could not copy the upstream patch_apk() definition." >&2
+    exit 1
+fi
+eval "patch_apk_upstream () $_upstream_patch_body"
+unset _upstream_patch_definition _upstream_patch_body
+if ! declare -F patch_apk_upstream >/dev/null; then
+    echo "ERROR: Could not create patch_apk_upstream()." >&2
+    exit 1
+fi
+source fork/patch_apk.sh
 trap "abort" INT
 
 if [ "${1-}" = "clean" ]; then
