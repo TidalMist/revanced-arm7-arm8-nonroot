@@ -593,7 +593,7 @@ patch_apk() {
         if [ "$rv_brand_f" = rvx-anddea ]; then
 		local rvx_anddea="-OpackageNameYouTube=app.rvx.android.youtube"; fi
         local build_tools="${ANDROID_HOME}/build-tools/$(ls -vr ${ANDROID_HOME}/build-tools | grep -wm1 .)"
-        local apksign="${build_tools}/apksigner sign --cert ks.jhc.x509.pem --key ks.jhc.pk8" align="${build_tools}/zipalign -pf 4"
+        local apksign="${build_tools}/apksigner sign --cert ks.jhc.x509.pem --key ks.jhc.pk8" align="${build_tools}/zipalign -P 16 -f 4"
         local arm8apk="/${app_name_l}-arm64-v8a-${rv_brand_f}.apk"
         local arm7apk="/${app_name_l}-armeabi-v7a-${rv_brand_f}.apk"
         local x86_64apk="/${app_name_l}-x86_64-${rv_brand_f}.apk"
