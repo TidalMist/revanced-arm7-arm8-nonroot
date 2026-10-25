@@ -3,27 +3,40 @@
 # Fork-specific APK post-processing. The upstream patcher itself remains in
 # utils.sh as patch_apk_upstream(), so upstream bug fixes are inherited.
 
-_fork_remove_abis() {
+_fork_remove_other_abis() {
     local apk="$1"
-    shift
-    local entry abi target
+    local keep_abi="$2"
+    local listing entry abi
     local entries=()
+
+    if ! listing="$(unzip -Z1 "$apk")"; then
+        return 1
+    fi
 
     while IFS= read -r entry; do
         [[ "$entry" == lib/*/* ]] || continue
         abi="${entry#lib/}"
         abi="${abi%%/*}"
-        for target in "$@"; do
-            if [[ "$abi" == "$target" ]]; then
-                entries+=("$entry")
-                break
-            fi
-        done
-    done < <(unzip -Z1 "$apk")
+        if [[ "$abi" != "$keep_abi" ]]; then
+            entries+=("$entry")
+        fi
+    done <<< "$listing"
 
     if ((${#entries[@]})); then
-        zip -q -d "$apk" "${entries[@]}" >/dev/null
+        zip -q -d "$apk" "${entries[@]}" >/dev/null || return 1
     fi
+    return 0
+}
+
+_fork_list_abis() {
+    local apk="$1"
+    local listing
+    if ! listing="$(unzip -Z1 "$apk")"; then
+        return 1
+    fi
+
+    awk -F/ '$1 == "lib" && NF >= 3 && $2 != "" && $NF ~ /\.so$/ { print $2 }' <<< "$listing" |
+        LC_ALL=C sort -u
 }
 
 patch_apk() {
@@ -41,7 +54,7 @@ patch_apk() {
     fi
 
     # build_rv() strips x86 libraries from the temporary input for arch=all.
-    # Use the original downloaded APK instead so all four ABIs remain available.
+    # Use the original downloaded APK so its available ABI libraries are retained.
     local source_apk="$stock_input"
     if [[ "$stock_input" == *.stripped.apk ]]; then
         local original_apk="${stock_input%.stripped.apk}"
@@ -98,78 +111,195 @@ patch_apk() {
         return 1
     fi
 
-    mkdir -p "$TEMP_DIR" "$BUILD_DIR"
-
     local app_name="${app_name_l:?app_name_l is not set by build_rv()}"
     local brand="${rv_brand_f:?rv_brand_f is not set by build_rv()}"
-    local arm64_name="${app_name}-arm64-v8a-${brand}.apk"
-    local armv7_name="${app_name}-armeabi-v7a-${brand}.apk"
-    local x86_64_name="${app_name}-x86_64-${brand}.apk"
-    local x86_name="${app_name}-x86-${brand}.apk"
+    local manifest_dir="${CWD:-$(pwd)}/.build-abi-manifests"
+    local manifest="$manifest_dir/${app_name}-${brand}.abis"
 
-    local arm64_tmp="$TEMP_DIR/$arm64_name"
-    local armv7_tmp="$TEMP_DIR/$armv7_name"
-    local x86_64_tmp="$TEMP_DIR/$x86_64_name"
-    local x86_tmp="$TEMP_DIR/$x86_name"
+    if ! mkdir -p "$manifest_dir" "$BUILD_DIR" "$TEMP_DIR"; then
+        epr "Could not create output directories for '$app_name'."
+        return 1
+    fi
 
-    rm -f "$arm64_tmp" "$armv7_tmp" "$x86_64_tmp" "$x86_tmp"
+    # Remove this profile's previous dynamic outputs before starting a new attempt.
+    if [[ -f "$manifest" ]]; then
+        local old_abi
+        while IFS= read -r old_abi; do
+            if [[ "$old_abi" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+                if ! rm -f -- "$BUILD_DIR/${app_name}-${old_abi}-${brand}.apk"; then
+                    epr "Could not remove previous output for ABI '$old_abi'."
+                    return 1
+                fi
+            fi
+        done < "$manifest"
+    fi
+    if ! rm -f -- "$manifest" \
+        "$BUILD_DIR/${app_name}-arm64-v8a-${brand}.apk" \
+        "$BUILD_DIR/${app_name}-armeabi-v7a-${brand}.apk" \
+        "$BUILD_DIR/${app_name}-x86_64-${brand}.apk" \
+        "$BUILD_DIR/${app_name}-x86-${brand}.apk"; then
+        epr "Could not clear previous ABI outputs for '$app_name'."
+        return 1
+    fi
 
-    # AAPT2 optimization is applied once, then the optimized universal APK is
-    # copied and native libraries for the other ABIs are removed.
-    if ! "$aapt2" optimize --target-densities xxhdpi "$patched_apk" -o "$arm64_tmp"; then
+    local split_work_dir
+    if ! split_work_dir="$(mktemp -d -p "$TEMP_DIR" "${app_name}-${brand}.split.XXXXXX")"; then
+        epr "Could not create a temporary directory for '$app_name'."
+        return 1
+    fi
+    local optimized_tmp="$split_work_dir/optimized.apk"
+    local manifest_tmp="$split_work_dir/abis.manifest"
+
+    # Optimize once, then discover the ABI directories actually present in the
+    # optimized patched APK rather than assuming four architectures.
+    if ! "$aapt2" optimize --target-densities xxhdpi "$patched_apk" -o "$optimized_tmp"; then
         epr "AAPT2 optimization failed for '$patched_apk'."
-        rm -f "$arm64_tmp"
+        rm -rf -- "$split_work_dir"
         return 1
     fi
-    cp -f "$arm64_tmp" "$armv7_tmp"
-    cp -f "$arm64_tmp" "$x86_64_tmp"
-    cp -f "$arm64_tmp" "$x86_tmp"
-
-    if ! _fork_remove_abis "$arm64_tmp" armeabi-v7a x86_64 x86 ||
-       ! _fork_remove_abis "$armv7_tmp" arm64-v8a x86_64 x86 ||
-       ! _fork_remove_abis "$x86_64_tmp" arm64-v8a armeabi-v7a x86 ||
-       ! _fork_remove_abis "$x86_tmp" arm64-v8a armeabi-v7a x86_64; then
-        epr "Could not split native libraries for '$app_name'."
-        rm -f "$arm64_tmp" "$armv7_tmp" "$x86_64_tmp" "$x86_tmp"
+    if ! unzip -tqq "$optimized_tmp"; then
+        epr "AAPT2 produced an invalid ZIP/APK for '$app_name'."
+        rm -rf -- "$split_work_dir"
         return 1
     fi
 
-    local name temp_file output_file
-    local names=("$arm64_name" "$armv7_name" "$x86_64_name" "$x86_name")
-    local sources=("$arm64_tmp" "$armv7_tmp" "$x86_64_tmp" "$x86_tmp")
-    local i
-    for i in "${!names[@]}"; do
+    local abi_list
+    if ! abi_list="$(_fork_list_abis "$optimized_tmp")"; then
+        epr "Could not inspect native library entries in '$optimized_tmp'."
+        rm -rf -- "$split_work_dir"
+        return 1
+    fi
+    if [[ -z "$abi_list" ]]; then
+        epr "No native .so libraries were found in the optimized APK; refusing an empty ABI release."
+        rm -rf -- "$split_work_dir"
+        return 1
+    fi
+
+    local -a abis=()
+    local -a names=()
+    local abi
+    while IFS= read -r abi; do
+        [[ -n "$abi" ]] || continue
+        if [[ ! "$abi" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+            epr "Unsafe or invalid ABI directory name '$abi'; refusing to create output files."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+        abis+=("$abi")
+        names+=("${app_name}-${abi}-${brand}.apk")
+    done <<< "$abi_list"
+
+    if ((${#abis[@]} == 0)); then
+        epr "Could not determine any usable ABI from '$optimized_tmp'."
+        rm -rf -- "$split_work_dir"
+        return 1
+    fi
+
+    local name split_tmp temp_file actual_abis i
+    for i in "${!abis[@]}"; do
+        abi="${abis[$i]}"
         name="${names[$i]}"
-        # Keep zipalign output concise; the explicit check below still fails on misalignment.
-        temp_file="$TEMP_DIR/${name%.apk}.aligned.apk"
-        output_file="$BUILD_DIR/$name"
+        split_tmp="$split_work_dir/${name%.apk}.split.apk"
+        temp_file="$split_work_dir/${name%.apk}.aligned.apk"
 
-        if ! "$zipalign" -P 16 -f 4 "${sources[$i]}" "$temp_file"; then
+        if ! cp -f "$optimized_tmp" "$split_tmp"; then
+            epr "Could not create the '$abi' split for '$app_name'."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+        if ! _fork_remove_other_abis "$split_tmp" "$abi"; then
+            epr "Could not remove non-'$abi' native libraries from '$name'."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+        if ! unzip -tqq "$split_tmp"; then
+            epr "The '$abi' split is not a valid ZIP/APK."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+        if ! actual_abis="$(_fork_list_abis "$split_tmp")"; then
+            epr "Could not verify native libraries in '$name'."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+        if [[ "$actual_abis" != "$abi" ]]; then
+            epr "ABI split mismatch for '$name': expected only '$abi', found '${actual_abis:-none}'."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+
+        # zipalign's -P 16 aligns uncompressed native libraries for 16 KiB pages.
+        if ! "$zipalign" -P 16 -f 4 "$split_tmp" "$temp_file"; then
             epr "zipalign failed for '$name'."
-            rm -f "$temp_file"
+            rm -rf -- "$split_work_dir"
             return 1
         fi
         if ! "$zipalign" -c -P 16 4 "$temp_file"; then
             epr "APK alignment verification failed for '$name'."
-            rm -f "$temp_file"
+            rm -rf -- "$split_work_dir"
             return 1
         fi
         if ! "$apksigner" sign --cert "$key_cert" --key "$key_pk8" "$temp_file"; then
             epr "APK signing failed for '$name'."
-            rm -f "$temp_file"
+            rm -rf -- "$split_work_dir"
             return 1
         fi
         if ! "$apksigner" verify "$temp_file" >/dev/null; then
             epr "APK signature verification failed for '$name'."
-            rm -f "$temp_file"
+            rm -rf -- "$split_work_dir"
             return 1
         fi
-        mv -f "$temp_file" "$output_file"
-        pr "Built optimized APK: '$output_file'"
+        if ! unzip -tqq "$temp_file"; then
+            epr "Signed APK ZIP integrity check failed for '$name'."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+        if ! "$zipalign" -c -P 16 4 "$temp_file"; then
+            epr "Signed APK failed its final 16 KiB alignment check: '$name'."
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
     done
 
-    rm -f "$arm64_tmp" "$armv7_tmp" "$x86_64_tmp" "$x86_tmp"
-    # Keep patched_apk intact: upstream build_rv() moves it to its normal
-    # -all.apk intermediate, which the workflow removes before publishing.
-    [[ -f "$patched_apk" ]]
+    if [[ ! -f "$patched_apk" ]]; then
+        epr "The universal patched APK disappeared before ABI outputs could be published."
+        rm -rf -- "$split_work_dir"
+        return 1
+    fi
+    if ! printf '%s\n' "${abis[@]}" > "$manifest_tmp"; then
+        epr "Could not write the ABI manifest for '$app_name'."
+        rm -rf -- "$split_work_dir"
+        return 1
+    fi
+
+    # Publish only after every ABI APK has passed ZIP, alignment and signature checks.
+    for i in "${!names[@]}"; do
+        name="${names[$i]}"
+        temp_file="$split_work_dir/${name%.apk}.aligned.apk"
+        if ! mv -f -- "$temp_file" "$BUILD_DIR/$name"; then
+            epr "Could not publish '$name'; removing this profile's partial outputs."
+            local cleanup_name
+            for cleanup_name in "${names[@]}"; do
+                rm -f -- "$BUILD_DIR/$cleanup_name"
+            done
+            rm -f -- "$manifest"
+            rm -rf -- "$split_work_dir"
+            return 1
+        fi
+    done
+
+    if ! mv -f -- "$manifest_tmp" "$manifest"; then
+        epr "Could not publish the ABI manifest for '$app_name'; removing partial outputs."
+        local cleanup_name
+        for cleanup_name in "${names[@]}"; do
+            rm -f -- "$BUILD_DIR/$cleanup_name"
+        done
+        rm -f -- "$manifest"
+        rm -rf -- "$split_work_dir"
+        return 1
+    fi
+
+    rm -rf -- "$split_work_dir"
+    pr "Built ${#abis[@]} ABI-specific APK(s) for '$app_name': ${abis[*]}"
+    return 0
 }

@@ -52,6 +52,9 @@ jobs:
             fi
           fi
 
+      - name: Clear previous build outputs
+        run: rm -rf -- build .build-abi-manifests
+
       - name: Build modules/APKs
         run: if [ -f "config.json" ]; then ./build.sh config.json; else ./build.sh config.toml; fi
         env:
@@ -60,146 +63,28 @@ jobs:
       - name: Remove universal intermediate APKs
         run: find build -maxdepth 1 -type f -name '*-all.apk' -delete
 
-      - name: Get output
+      - name: Finalize build status and changelog
         id: get_output
         shell: bash
         run: |
           set -euo pipefail
+          config_file=config.toml
+          if [[ -f config.json ]]; then config_file=config.json; fi
+          python3 scripts/finalize_build.py \
+            --config "$config_file" \
+            --build-dir build \
+            --manifest-dir .build-abi-manifests \
+            --current-changelog build.md \
+            --previous-changelog build.previous.md \
+            --status-file build-status.json
 
-          python3 - <<'PY'
-          from collections import defaultdict
-          from pathlib import Path
-          import json
-          import re
-          import tomllib
-
-          previous_path = Path("build.previous.md")
-          previous = previous_path.read_text(encoding="utf-8") if previous_path.is_file() else ""
-          current_path = Path("build.md")
-          current = current_path.read_text(encoding="utf-8")
-
-          config_json = Path("config.json")
-          if config_json.is_file():
-              config = json.loads(config_json.read_text(encoding="utf-8"))
-          else:
-              config = tomllib.loads(Path("config.toml").read_text(encoding="utf-8"))
-
-          default_source = config.get("patches-source", "ReVanced/revanced-patches")
-          default_brand = config.get("rv-brand", "ReVanced")
-          abis = ("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
-          build_dir = Path("build")
-
-          profiles = []
-          for table_name, options in config.items():
-              if not isinstance(options, dict):
-                  continue
-              enabled = options.get("enabled", True)
-              if enabled is False or str(enabled).lower() == "false":
-                  continue
-
-              app_name = str(options.get("app-name", table_name)).lower().replace(" ", "-")
-              brand = str(options.get("rv-brand", default_brand)).lower().replace(" ", "-")
-              source = str(options.get("patches-source", default_source))
-              arch = str(options.get("arch", "all"))
-
-              expected = [f"{app_name}-{abi}-{brand}.apk" for abi in abis] if arch == "all" else []
-              complete = bool(expected) and all((build_dir / name).is_file() for name in expected)
-              profiles.append({
-                  "table": table_name,
-                  "source": source,
-                  "brand": brand,
-                  "expected": expected,
-                  "complete": complete,
-              })
-              missing = [name for name in expected if not (build_dir / name).is_file()]
-              if arch != "all":
-                  print(f"{table_name}: arch={arch} uses non-split output; treated as incomplete for this release workflow.")
-              elif missing:
-                  print(f"{table_name}: missing {len(missing)} expected APK(s): {', '.join(missing)}")
-              else:
-                  print(f"{table_name}: all four ABI APKs are present.")
-
-          by_brand = defaultdict(list)
-          by_source = defaultdict(list)
-          for profile in profiles:
-              by_brand[profile["brand"]].append(profile)
-              by_source[profile["source"]].append(profile)
-
-          brand_status = {}
-          for brand, items in by_brand.items():
-              expected_count = sum(len(item["expected"]) for item in items)
-              actual_count = len(list(build_dir.glob(f"*{brand}.apk")))
-              complete = (
-                  expected_count > 0
-                  and all(item["complete"] for item in items)
-                  and all(
-                      all(profile["complete"] for profile in by_source[item["source"]])
-                      for item in items
-                  )
-                  and actual_count == expected_count
-              )
-              brand_status[brand] = {
-                  "complete": complete,
-                  "expected": expected_count,
-                  "actual": actual_count,
-              }
-              print(f"Release group {brand}: {actual_count}/{expected_count} APK(s); complete={complete}.")
-
-          Path("build-status.json").write_text(
-              json.dumps({"brands": brand_status}, indent=2) + "\n",
-              encoding="utf-8",
-          )
-
-          def record_pattern(source):
-              return re.compile(
-                  rf"(?m)^Patches: {re.escape(source)}/[^\r\n]*"
-                  rf"(?:\r?\n\[Changelog\]\([^\r\n]*\))?"
-              )
-
-          def get_record(text, source):
-              match = record_pattern(source).search(text)
-              return match.group(0).strip() if match else ""
-
-          def sources_in(text):
-              return re.findall(r"(?m)^Patches: ([^/\r\n]+/[^/\r\n]+)/", text)
-
-          source_order = []
-          for source in (
-              [profile["source"] for profile in profiles]
-              + sources_in(current)
-              + sources_in(previous)
-          ):
-              if source not in source_order:
-                  source_order.append(source)
-
-          chosen_records = []
-          for source in source_order:
-              new_record = get_record(current, source)
-              old_record = get_record(previous, source)
-              items = by_source.get(source, [])
-
-              if not items:
-                  # This source wasn't part of this run; don't lose its old marker.
-                  chosen = old_record or new_record
-                  print(f"{source}: not part of this build; preserving its previous marker.")
-              elif all(item["complete"] for item in items):
-                  chosen = new_record or old_record
-                  print(f"{source}: every configured profile is complete; keeping the current marker.")
-              else:
-                  chosen = old_record
-                  print(f"{source}: at least one configured profile is incomplete; restoring the previous marker.")
-
-              if chosen:
-                  chosen_records.append(chosen)
-
-          for source in source_order:
-              current = record_pattern(source).sub("", current)
-
-          current = re.sub(r"\n[ \t]*\n(?:[ \t]*\n)+", "\n\n", current).rstrip()
-          if chosen_records:
-              current += "\n\n" + "\n\n".join(chosen_records)
-          current_path.write_text(current.rstrip() + "\n", encoding="utf-8")
-          PY
+          python3 scripts/validate_built_apks.py \
+            --config "$config_file" \
+            --build-dir build \
+            --manifest-dir .build-abi-manifests \
+            --status-file build-status.json \
+            --current-changelog build.md \
+            --previous-changelog build.previous.md
 
           output() {
             local key="$1" value="$2" delimiter
@@ -244,6 +129,7 @@ jobs:
           cp -f build.md build.tmp
 
       - name: Upload releases
+        id: upload_releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RVX_A6_7_TAG: ${{ steps.get_output.outputs.RVX_A6_7_TAG }}
@@ -255,7 +141,10 @@ jobs:
           RVX_TAG: ${{ steps.get_output.outputs.RVX_TAG }}
           RVX_LOG: ${{ steps.get_output.outputs.RVX_LOG }}
         run: |
+          set -euo pipefail
           shopt -s nullglob
+          published_tags_file="$RUNNER_TEMP/published-release-tags.txt"
+          : > "$published_tags_file"
 
           upload_release() {
             local tag="$1"
@@ -284,6 +173,7 @@ jobs:
             else
               gh release create "$tag" "${files[@]}" --title "$title" --notes "$body" "--latest=$latest"
             fi
+            printf '%s\n' "$tag" >> "$published_tags_file"
           }
 
           if [[ -n "$RVX_A6_7_LOG" ]]; then
@@ -302,6 +192,13 @@ jobs:
             files=(./build/*rvx-anddea.apk)
             upload_release "$RVX_TAG" "ReVanced Extended anddea" "$RVX_LOG" false "${files[@]}"
           fi
+
+          delimiter="$(openssl rand -hex 16)"
+          {
+            printf 'PUBLISHED_TAGS<<%s\n' "$delimiter"
+            cat "$published_tags_file"
+            printf '%s\n' "$delimiter"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Update changelog
         id: update_config
@@ -325,7 +222,10 @@ jobs:
           fi
 
       - name: Keep latest two releases per variant
+        if: ${{ steps.upload_releases.outputs.PUBLISHED_TAGS != '' }}
         uses: actions/github-script@v9
+        env:
+          PUBLISHED_TAGS: ${{ steps.upload_releases.outputs.PUBLISHED_TAGS }}
         with:
           script: |
             const releases = await github.paginate(
@@ -354,15 +254,31 @@ jobs:
 
             core.info(`Found ${releases.length} releases across all pages.`);
 
+            const publishedTags = new Set(
+              (process.env.PUBLISHED_TAGS || '')
+                .split(/\\r?\\n/)
+                .map((tag) => tag.trim())
+                .filter(Boolean)
+            );
+
             for (const { suffix, keep } of config) {
               const family = releases
                 .filter((release) => release.tag_name.endsWith(suffix))
                 .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
 
-              const targets = family.slice(keep);
-              core.info(
-                `${suffix}: keeping ${Math.min(family.length, keep)}, deleting ${targets.length}.`
-              );
+              const justPublished = family.filter((release) => publishedTags.has(release.tag_name));
+              if (justPublished.length === 0) {
+                core.info(suffix + ': no release published by this run; pruning skipped.');
+                continue;
+              }
+
+              const keepTags = new Set(justPublished.map((release) => release.tag_name));
+              for (const release of family) {
+                if (keepTags.size >= keep) break;
+                keepTags.add(release.tag_name);
+              }
+              const targets = family.filter((release) => !keepTags.has(release.tag_name));
+              core.info(`${suffix}: keeping ${keepTags.size}, deleting ${targets.length}.`);
 
               for (const release of targets) {
                 core.info(`Deleting old release ${release.tag_name} (${release.created_at}).`);

@@ -99,7 +99,7 @@ def validate_upstream_patcher_order(content: str) -> None:
 
 
 def validate_fork_wrapper(content: str) -> None:
-    """Protect the fork-specific ordering and four-ABI handling from accidental drift."""
+    """Protect dynamic ABI discovery, validation, alignment and signature checks."""
     package_option = _require_one(
         r'^\s*patcher_args\+=" -OpackageNameYouTube=app\.rvx\.android\.youtube"\s*$',
         content,
@@ -121,16 +121,16 @@ def validate_fork_wrapper(content: str) -> None:
 
     required_fragments = {
         "fallback to the original unstripped APK": 'source_apk="$original_apk"',
-        "arm64-v8a ABI output": 'local arm64_name="${app_name}-arm64-v8a-${brand}.apk"',
-        "armeabi-v7a ABI output": 'local armv7_name="${app_name}-armeabi-v7a-${brand}.apk"',
-        "x86_64 ABI output": 'local x86_64_name="${app_name}-x86_64-${brand}.apk"',
-        "x86 ABI output": 'local x86_name="${app_name}-x86-${brand}.apk"',
-        "xxhdpi AAPT2 optimization": '"$aapt2" optimize --target-densities xxhdpi "$patched_apk" -o "$arm64_tmp"',
-        "arm64 split filter": '_fork_remove_abis "$arm64_tmp" armeabi-v7a x86_64 x86',
-        "armeabi-v7a split filter": '_fork_remove_abis "$armv7_tmp" arm64-v8a x86_64 x86',
-        "x86_64 split filter": '_fork_remove_abis "$x86_64_tmp" arm64-v8a armeabi-v7a x86',
-        "x86 split filter": '_fork_remove_abis "$x86_tmp" arm64-v8a armeabi-v7a x86_64',
+        "ABI discovery from optimized APK": 'abi_list="$(_fork_list_abis "$optimized_tmp")"',
+        "empty native ABI set is rejected": 'No native .so libraries were found in the optimized APK',
+        "safe ABI directory name validation": 'if [[ ! "$abi" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then',
+        "per-ABI native library filtering": '_fork_remove_other_abis "$split_tmp" "$abi"',
+        "native libraries match the selected ABI": 'if [[ "$actual_abis" != "$abi" ]]; then',
+        "xxhdpi AAPT2 optimization": '"$aapt2" optimize --target-densities xxhdpi "$patched_apk" -o "$optimized_tmp"',
+        "16 KiB ZIP alignment": '"$zipalign" -P 16 -f 4 "$split_tmp" "$temp_file"',
+        "16 KiB alignment verification": '"$zipalign" -c -P 16 4 "$temp_file"',
         "signature verification": '"$apksigner" verify "$temp_file" >/dev/null',
+        "manifest committed after APK outputs": 'mv -f -- "$manifest_tmp" "$manifest"',
     }
     for description, fragment in required_fragments.items():
         if fragment not in content:

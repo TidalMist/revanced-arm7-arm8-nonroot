@@ -8,6 +8,12 @@ on:
       - ".github/workflows/build.yml"
       - "scripts/sync_upstream.py"
       - "scripts/test_sync_upstream.py"
+      - "scripts/finalize_build.py"
+      - "scripts/test_finalize_build.py"
+      - "scripts/test_dynamic_splitter.py"
+      - "scripts/validate_built_apks.py"
+      - "scripts/test_validate_built_apks.py"
+      - "fork/patch_apk.sh"
   workflow_dispatch:
   schedule:
     - cron: "17 19 * * *"
@@ -38,7 +44,7 @@ jobs:
         run: python3 scripts/sync_upstream.py
 
       - name: Test sync safeguards
-        run: python3 -m unittest discover -s scripts -p 'test_sync_upstream.py' -v
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
 
       - name: Validate synced scripts
         run: |
@@ -46,7 +52,15 @@ jobs:
           bash -n utils.sh build.sh fork/patch_apk.sh
           python3 - <<'PY'
           from pathlib import Path
-          for name in ("scripts/sync_upstream.py", "scripts/test_sync_upstream.py"):
+          for name in (
+              "scripts/sync_upstream.py",
+              "scripts/test_sync_upstream.py",
+              "scripts/finalize_build.py",
+              "scripts/test_finalize_build.py",
+              "scripts/test_dynamic_splitter.py",
+              "scripts/validate_built_apks.py",
+              "scripts/test_validate_built_apks.py",
+          ):
               compile(Path(name).read_text(encoding="utf-8"), name, "exec")
           PY
           git diff --check

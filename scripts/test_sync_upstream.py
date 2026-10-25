@@ -191,16 +191,6 @@ class SyncUpstreamTests(unittest.TestCase):
                 [],
             )
 
-    def test_fork_wrapper_rejects_missing_x86_split(self) -> None:
-        wrapper = (ROOT / "fork/patch_apk.sh").read_text(encoding="utf-8")
-        broken = wrapper.replace(
-            '_fork_remove_abis "$x86_tmp" arm64-v8a armeabi-v7a x86_64',
-            "",
-            1,
-        )
-        with self.assertRaisesRegex(RuntimeError, "x86 split filter"):
-            validate_fork_wrapper(broken)
-
     def test_fork_wrapper_rejects_package_option_after_upstream_call(self) -> None:
         wrapper_path = ROOT / "fork/patch_apk.sh"
         wrapper = wrapper_path.read_text(encoding="utf-8")
