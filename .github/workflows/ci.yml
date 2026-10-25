@@ -1,13 +1,34 @@
-name: CI
+name: Sync upstream and check patches
+
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/build.yml"
+      - "scripts/sync_upstream.py"
+      - "scripts/test_sync_upstream.py"
+      - "scripts/finalize_build.py"
+      - "scripts/test_finalize_build.py"
+      - "scripts/test_dynamic_splitter.py"
+      - "scripts/validate_built_apks.py"
+      - "scripts/test_validate_built_apks.py"
+      - "fork/patch_apk.sh"
   workflow_dispatch:
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "17 19 * * *"
+
+concurrency:
+  group: sync-builder-and-check-patches
+  cancel-in-progress: false
 
 jobs:
-  check:
+  prepare:
     permissions: write-all
     runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.should_build.outputs.should_build }}
+      build_ref: ${{ steps.commit_upstream.outputs.build_ref }}
     steps:
       - uses: actions/setup-java@v6
         with:
@@ -19,23 +40,71 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Should build?
+      - name: Sync upstream scripts and required bin assets
+        run: python3 scripts/sync_upstream.py
+
+      - name: Test sync safeguards
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+
+      - name: Validate synced scripts
+        run: |
+          set -euo pipefail
+          bash -n utils.sh build.sh fork/patch_apk.sh
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in (
+              "scripts/sync_upstream.py",
+              "scripts/test_sync_upstream.py",
+              "scripts/finalize_build.py",
+              "scripts/test_finalize_build.py",
+              "scripts/test_dynamic_splitter.py",
+              "scripts/validate_built_apks.py",
+              "scripts/test_validate_built_apks.py",
+          ):
+              compile(Path(name).read_text(encoding="utf-8"), name, "exec")
+          PY
+          git diff --check
+
+      - name: Commit upstream updates
+        id: commit_upstream
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -- utils.sh build.sh bin/ module/ CONFIG.md sig.txt
+
+          if git diff --cached --quiet; then
+            echo "No upstream source changes to commit."
+          else
+            git commit -m "Sync builder scripts and bin assets from j-hc/revanced-magisk-module"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+          echo "build_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether patch releases changed
         id: should_build
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if ! git checkout origin/update build.md; then
-            echo "first time building!"
-            echo "SHOULD_BUILD=1" >> $GITHUB_OUTPUT
-          else
-            UPDATE_CFG=$(./build.sh config.toml --config-update)
-            if [ "$UPDATE_CFG" ]; then
-              echo "'$UPDATE_CFG'"
-              echo "SHOULD_BUILD=1" >> $GITHUB_OUTPUT
+          set -euo pipefail
+
+          if git cat-file -e "origin/update:build.md" 2>/dev/null; then
+            git show "origin/update:build.md" > build.md
+            UPDATE_CFG="$(./build.sh config.toml --config-update)"
+            if [[ -n "$UPDATE_CFG" ]]; then
+              echo "New patch release(s) detected:"
+              printf '%s\n' "$UPDATE_CFG"
+              echo "should_build=1" >> "$GITHUB_OUTPUT"
             else
-              echo "SHOULD_BUILD=0" >> $GITHUB_OUTPUT
+              echo "Patch releases are unchanged; skipping APK build."
+              echo "should_build=0" >> "$GITHUB_OUTPUT"
             fi
+          else
+            echo "No previous update/build.md found; an initial build is required."
+            echo "should_build=1" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Clear older runs
@@ -44,12 +113,12 @@ jobs:
         run: |
           gh run list -L400 --json databaseId -q '.[].databaseId' | tail -n+10 | xargs -IID gh api "repos/$GITHUB_REPOSITORY/actions/runs/ID" -X DELETE || :
 
-    outputs:
-      SHOULD_BUILD: ${{ steps.should_build.outputs.SHOULD_BUILD }}
-
   build:
     permissions: write-all
-    needs: check
+    needs: prepare
+    if: ${{ needs.prepare.outputs.should_build == '1' }}
     uses: ./.github/workflows/build.yml
-    if: ${{ needs.check.outputs.SHOULD_BUILD == 1 }}
+    with:
+      from_ci: true
+      ref: ${{ needs.prepare.outputs.build_ref }}
     secrets: inherit
